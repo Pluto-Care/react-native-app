@@ -34,24 +34,24 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
           />
           <CustomButton
             text="End Call"
-            style="accent_hollow"
+            style="accent"
             width="full"
             onClick={() => {
               // router.push('/dashboard');
             }}
           />
+          <View className="py-4" />
+          <CustomButton
+            text="Sign Out"
+            style="accent_hollow"
+            width="full"
+            onClick={() => {
+              signOut().then(() => {
+                navigation.navigate('Login');
+              });
+            }}
+          />
         </View>
-        <View className="py-4" />
-        <CustomButton
-          text="Sign Out"
-          style="accent_hollow"
-          width="full"
-          onClick={() => {
-            signOut().then(() => {
-              navigation.navigate('Login');
-            });
-          }}
-        />
       </View>
     </SignedIn>
   );

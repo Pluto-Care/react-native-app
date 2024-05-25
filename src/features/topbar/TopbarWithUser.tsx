@@ -10,11 +10,13 @@ export default function UserTopbar() {
 
   return (
     <SignedIn>
-      <View className="flex justify-center w-full h-16 px-6 place-items-center">
-        <Text className={`${colors.text.primary} text-lg font-bold`}>
-          Pluto Health
-        </Text>
-        <View className="flex flex-row gap-1 border rounded-full border-zinc-200">
+      <View className="flex flex-row justify-center w-full h-16 px-6 place-items-center">
+        <View>
+          <Text className={`${colors.text.primary} text-lg font-bold`}>
+            Pluto Health
+          </Text>
+        </View>
+        <View className="flex flex-row gap-1 border rounded-full h-min border-zinc-200">
           <Text className="text-zinc-600 dark:text-zinc-300">
             {context.user?.detail.first_name}
           </Text>

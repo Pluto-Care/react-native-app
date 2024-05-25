@@ -39,6 +39,11 @@ const baseStyle = {
 
 const CustomButton = (props: PButton_Props) => {
   const width = props.width === 'full' ? 'w-full' : 'w-auto';
+  console.log(props.style, styles[props.style]);
+
+  if (styles[props.style] === undefined) {
+    styles[props.style] = styles.accent_hollow;
+  }
 
   return (
     <Pressable
