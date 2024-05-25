@@ -2,18 +2,31 @@ import React from 'react';
 import {View, useColorScheme} from 'react-native';
 import {Text} from 'react-native';
 import {useForm} from 'react-hook-form';
-import {SignedIn, SignedOut, useSignIn, useSignOut} from '../../contexts/auth';
+import {
+  SignedIn,
+  SignedOut,
+  useAuth,
+  useSignIn,
+  useSignOut,
+} from '../../contexts/auth';
 import CustomButton from '../../components/ui/CustomButton';
 import CustomInputField from '../../components/ui/CustomInputField';
 import {getColors} from '../../styles';
+import {useMakeOutgoingCall} from '../../hooks/twilio/useMakeOutgoingCall';
 
 export default function LoginScreen(): React.JSX.Element {
   const colorScheme = useColorScheme() || 'light';
   const colors = getColors(colorScheme);
   const {signOut} = useSignOut();
+  const context = useAuth();
+  const {makeCall} = useMakeOutgoingCall(
+    context.user?.session.key,
+    '+17782339602',
+    'number',
+  );
 
   return (
-    <View className="flex flex-1 flex-col items-start justify-center px-5 pb-8 pt-5">
+    <View className="flex flex-col items-start justify-center flex-1 px-5 pt-5 pb-8">
       <SignedOut>
         <Text
           className={`${colors.text.primary} mb-6 mt-3 w-full text-3xl font-medium`}>
@@ -44,6 +57,11 @@ export default function LoginScreen(): React.JSX.Element {
           width="full"
           onClick={() => {
             // router.push('/dashboard');
+            try {
+              makeCall();
+            } catch (err: any) {
+              console.log(err);
+            }
           }}
         />
         <View className="py-4" />
