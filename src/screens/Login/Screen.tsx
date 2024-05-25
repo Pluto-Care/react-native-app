@@ -2,49 +2,41 @@ import React from 'react';
 import {View, useColorScheme} from 'react-native';
 import {Text} from 'react-native';
 import {useForm} from 'react-hook-form';
-import {
-  SignedIn,
-  SignedOut,
-  useAuth,
-  useSignIn,
-  useSignOut,
-} from '../../contexts/auth';
+import {SignedIn, SignedOut, useSignIn} from '../../contexts/auth';
 import CustomButton from '../../components/ui/CustomButton';
 import CustomInputField from '../../components/ui/CustomInputField';
 import {getColors} from '../../styles';
-import {useMakeOutgoingCall} from '../../hooks/twilio/useMakeOutgoingCall';
+import PlainTopbar from '../../features/topbar/PlainTopbar';
+import LinearGradient from 'react-native-linear-gradient';
+import {handleAxiosError} from '../../utils/handleAxiosError';
 
-export default function LoginScreen(): React.JSX.Element {
+export default function LoginScreen({
+  navigation,
+}: {
+  navigation: any;
+}): React.JSX.Element {
   const colorScheme = useColorScheme() || 'light';
   const colors = getColors(colorScheme);
-  const {signOut} = useSignOut();
-  const context = useAuth();
-  const {makeCall} = useMakeOutgoingCall(
-    context.user?.session.key,
-    '+17782339602',
-    'number',
-  );
 
   return (
-    <View className="flex flex-col items-start justify-center flex-1 px-5 pt-5 pb-8">
+    <View className="min-h-screen bg-white">
       <SignedOut>
-        <Text
-          className={`${colors.text.primary} mb-6 mt-3 w-full text-3xl font-medium`}>
-          Sign In
-        </Text>
-        <SignInScreen />
-        <Text
-          className={`${colors.text.primary} mb-3 mt-8 w-full text-lg font-bold`}>
-          Having trouble?
-        </Text>
-        <Text
-          className={`${colors.text.primary} mb-1 border-b border-accent-600 text-base text-accent-600 dark:border-accent-400 dark:text-accent-400`}>
-          Reset your password
-        </Text>
-        <Text
-          className={`${colors.text.primary} my-1 border-b border-accent-600 text-base text-accent-600 dark:border-accent-400 dark:text-accent-400`}>
-          Contact your support
-        </Text>
+        <View className="h-1/4">
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            colors={['#ffedd5', 'rgb(229,244,255)', '#f3e8ff']}
+            className="h-full">
+            <PlainTopbar />
+          </LinearGradient>
+        </View>
+        <View className="px-6">
+          <Text
+            className={`${colors.text.primary} mb-6 mt-8 text-lg w-full font-bold`}>
+            Sign in to conitnue
+          </Text>
+        </View>
+        <SignInForm navigation={navigation} />
       </SignedOut>
       <SignedIn>
         <Text
@@ -53,24 +45,10 @@ export default function LoginScreen(): React.JSX.Element {
         </Text>
         <CustomButton
           text="Go to Dashboard"
-          style="accent"
-          width="full"
-          onClick={() => {
-            // router.push('/dashboard');
-            try {
-              makeCall();
-            } catch (err: any) {
-              console.log(err);
-            }
-          }}
-        />
-        <View className="py-4" />
-        <CustomButton
-          text="Sign Out"
           style="accent_hollow"
           width="full"
           onClick={() => {
-            signOut();
+            navigation.navigate('Dashboard');
           }}
         />
       </SignedIn>
@@ -78,8 +56,11 @@ export default function LoginScreen(): React.JSX.Element {
   );
 }
 
-function SignInScreen() {
+function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
+  const colorScheme = useColorScheme() || 'light';
+  const colors = getColors(colorScheme);
   const [isWaiting, setIsWaiting] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const {signIn} = useSignIn();
 
   const {
@@ -92,37 +73,51 @@ function SignInScreen() {
     if (isWaiting) return;
     try {
       await signIn(data['email'], data['password']);
+      navigation.navigate('Dashboard');
     } catch (err: any) {
-      console.log(err);
+      handleAxiosError(err, setError);
     }
     setIsWaiting(false);
   };
 
   return (
-    <View className="w-full">
-      <CustomInputField
-        control={control}
-        errors={errors}
-        name="email"
-        label="Email Address"
-        isRequired={true}
-        isEmail={true}
-      />
-      <CustomInputField
-        control={control}
-        errors={errors}
-        name="password"
-        isPassword={true}
-        isRequired={true}
-        label="Password"
-      />
-      <View className="py-2" />
-      <CustomButton
-        style="accent"
-        text="Continue"
-        width="full"
-        onClick={handleSubmit(onSignInPress)}
-      />
+    <View className="flex flex-col w-full h-80">
+      {error ? (
+        <View className="mb-4">
+          <Text className="px-6 text-base text-red-800">{error}</Text>
+        </View>
+      ) : (
+        <></>
+      )}
+      <View className="flex-1 border-t border-zinc-200">
+        <CustomInputField
+          control={control}
+          errors={errors}
+          name="email"
+          label="Email Address"
+          isRequired={true}
+          isEmail={true}
+        />
+        <CustomInputField
+          control={control}
+          errors={errors}
+          name="password"
+          isPassword={true}
+          isRequired={true}
+          label="Password"
+        />
+        <Text className={`${colors.text.secondary} mt-6 mb-4 text-base px-6`}>
+          Forgot your password?
+        </Text>
+      </View>
+      <View className="px-4 my-6">
+        <CustomButton
+          style="accent"
+          text="Continue"
+          width="full"
+          onClick={handleSubmit(onSignInPress)}
+        />
+      </View>
     </View>
   );
 }

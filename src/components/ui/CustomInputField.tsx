@@ -31,11 +31,14 @@ const styles: {[key in PButton_Style]: string} = {
 
 export default function CustomInputField(props: IInputFieldProps) {
   return (
-    <View className="my-1.5 font-sans">
-      <View className="mb-1 flex flex-row">
-        <Text className="flex-1 text-zinc-600 dark:text-zinc-300">
-          {props.label}
-        </Text>
+    <View className="pt-3 pb-2 font-sans border-b border-zinc-200">
+      <View className="flex flex-row px-6">
+        <View className="flex flex-row flex-1 gap-1">
+          <Text className="text-zinc-600 dark:text-zinc-300">
+            {props.label}
+          </Text>
+          <Text className="text-red-600 dark:text-red-500">*</Text>
+        </View>
         <Text className="text-red-600 dark:text-red-500">
           {props.errors[props.name] ? (
             props.errors[props.name]?.type === 'required' ? (
@@ -76,7 +79,7 @@ export default function CustomInputField(props: IInputFieldProps) {
             onChangeText={onChange}
             value={value}
             secureTextEntry={props.isPassword}
-            className={`rounded-md border px-4 py-2 font-sans text-base shadow-lg ${
+            className={`px-6 py-1 font-sans text-base ${
               props.errors[props.name] ? styles.danger : styles.default
             }`}
           />
