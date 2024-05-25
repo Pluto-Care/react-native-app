@@ -4,5 +4,11 @@ module.exports = {
   rules: {
     'dot-notation': 'off',
     curly: 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };

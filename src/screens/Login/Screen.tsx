@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, useColorScheme} from 'react-native';
 import {Text} from 'react-native';
 import {useForm} from 'react-hook-form';
-import {SignedIn, SignedOut, useSignIn} from '../../contexts/auth';
+import {SignedIn, SignedOut, useAuth, useSignIn} from '../../contexts/auth';
 import CustomButton from '../../components/ui/CustomButton';
 import CustomInputField from '../../components/ui/CustomInputField';
 import {getColors} from '../../styles';
@@ -17,6 +17,13 @@ export default function LoginScreen({
 }): React.JSX.Element {
   const colorScheme = useColorScheme() || 'light';
   const colors = getColors(colorScheme);
+  const context = useAuth();
+
+  useEffect(() => {
+    if (context.user) {
+      navigation.replace('Dashboard');
+    }
+  }, [context.user, navigation]);
 
   return (
     <View className="min-h-screen bg-white">
