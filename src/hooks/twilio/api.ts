@@ -15,6 +15,6 @@ export const getTwimlToken = async (auth_token: string): Promise<string> => {
       },
     })
     .then(function (response) {
-      return response.data.token;
+      return response.data.data.token;
     });
 };

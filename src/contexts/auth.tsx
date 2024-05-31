@@ -53,7 +53,7 @@ function useAuth(): AuthContextType {
   if (context?.user === null) {
     // Check cache
     authCache.get().then(value => {
-      if (value) {
+      if (value && 'session' in value && 'key' in value.session) {
         context.setUser(value);
       }
     });
@@ -78,6 +78,8 @@ const SignedOut = (props: {children: ReactNode}): ReactElement => {
 };
 
 function useSignIn() {
+  const [mfaSetupToken, setMfaSetupToken] = useState<string | null>(null);
+  const [mfaRequired, setMfaRequired] = useState<boolean>(false);
   const {user, setUser} = useAuth();
 
   const signIn = async (email: string, password: string, token?: string) => {
@@ -88,7 +90,6 @@ function useSignIn() {
       throw new Error('User is already signed in');
     }
     let user_obj, last_web_session, last_app_session, session;
-    console.log(AUTH_BACKEND_URL + '/api/user/login/');
     await axios
       .post(
         AUTH_BACKEND_URL + '/api/user/login/',
@@ -101,22 +102,38 @@ function useSignIn() {
         },
       )
       .then(response => {
-        user_obj = response.data.user;
-        last_web_session = response.data.last_session;
-        last_app_session = response.data.last_token_session;
-        session = response.data.session;
+        if ('mfa_join_token' in response.data.data) {
+          setMfaSetupToken(response.data.data.mfa_join_token);
+          throw new Error('MFA required');
+        } else {
+          user_obj = response.data.data.user;
+          last_web_session = response.data.data.last_session;
+          last_app_session = response.data.data.last_token_session;
+          session = response.data.data.session;
+        }
       })
       .catch(error => {
+        if (error.response && error.response.data) {
+          if ('errors' in error.response.data) {
+            if (error.response.data.errors.code === 'TOTPRequired') {
+              setMfaRequired(true);
+            }
+            throw new Error(error.response.data.errors.title);
+          }
+        }
         throw new Error(error);
       });
-    // Save to cache
-    authCache.save({detail: user_obj, session: session});
-    // Set Context
-    setUser({detail: user_obj, session: session});
-    return {user_obj, session, last_web_session, last_app_session};
+    if (session && 'key' in session) {
+      // Save to cache
+      authCache.save({detail: user_obj, session: session});
+      // Set Context
+      setUser({detail: user_obj, session: session});
+      return {user_obj, session, last_web_session, last_app_session};
+    }
+    throw new Error('Sign in failed');
   };
 
-  return {signIn};
+  return {signIn, mfaSetupToken, mfaRequired};
 }
 
 function useSignOut() {
@@ -138,15 +155,11 @@ function useSignOut() {
           },
         },
       )
-      .then(() => {
-        authCache.save(null);
-        setUser(null);
-      })
       .catch(error => {
-        authCache.save(null);
-        setUser(null);
-        throw new Error(error);
+        console.log(error.response);
       });
+    authCache.save(null);
+    setUser(null);
   };
 
   return {signOut};

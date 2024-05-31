@@ -68,7 +68,8 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
   const colors = getColors(colorScheme);
   const [isWaiting, setIsWaiting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const {signIn} = useSignIn();
+  const {signIn, mfaRequired} = useSignIn();
+  const [loginFormData, setLoginFormData] = React.useState<any>({});
 
   const {
     control,
@@ -80,6 +81,22 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
     if (isWaiting) return;
     try {
       await signIn(data['email'], data['password']);
+      navigation.navigate('Dashboard');
+    } catch (err: any) {
+      setLoginFormData(data);
+      handleAxiosError(err, setError);
+    }
+    setIsWaiting(false);
+  };
+
+  const onTOTPFilledPress = async (data: any) => {
+    if (isWaiting) return;
+    try {
+      await signIn(
+        loginFormData['email'],
+        loginFormData['password'],
+        data['token'],
+      );
       navigation.navigate('Dashboard');
     } catch (err: any) {
       handleAxiosError(err, setError);
@@ -96,35 +113,70 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
       ) : (
         <></>
       )}
-      <View className="flex-1 border-t border-zinc-200">
-        <CustomInputField
-          control={control}
-          errors={errors}
-          name="email"
-          label="Email Address"
-          isRequired={true}
-          isEmail={true}
-        />
-        <CustomInputField
-          control={control}
-          errors={errors}
-          name="password"
-          isPassword={true}
-          isRequired={true}
-          label="Password"
-        />
-        <Text className={`${colors.text.secondary} mt-6 mb-4 text-base px-6`}>
-          Forgot your password?
-        </Text>
-      </View>
+      {mfaRequired ? (
+        <TOTPForm onSubmit={onTOTPFilledPress} />
+      ) : (
+        <>
+          <View className="flex-1 border-t border-zinc-200">
+            <CustomInputField
+              control={control}
+              errors={errors}
+              name="email"
+              label="Email Address"
+              isRequired={true}
+              isEmail={true}
+            />
+            <CustomInputField
+              control={control}
+              errors={errors}
+              name="password"
+              isPassword={true}
+              isRequired={true}
+              label="Password"
+            />
+            <Text
+              className={`${colors.text.secondary} mt-6 mb-4 text-base px-6`}>
+              Forgot your password?
+            </Text>
+          </View>
+          <View className="px-4 my-6">
+            <CustomButton
+              style="accent"
+              text="Continue"
+              width="full"
+              onClick={handleSubmit(onSignInPress)}
+            />
+          </View>
+        </>
+      )}
+    </View>
+  );
+}
+
+const TOTPForm = ({onSubmit}: {onSubmit: any}): React.JSX.Element => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
+
+  return (
+    <View className="flex-1 border-t border-zinc-200">
+      <CustomInputField
+        control={control}
+        errors={errors}
+        name="token"
+        label="6 Digit Code"
+        isRequired={true}
+      />
       <View className="px-4 my-6">
         <CustomButton
           style="accent"
           text="Continue"
           width="full"
-          onClick={handleSubmit(onSignInPress)}
+          onClick={handleSubmit(onSubmit)}
         />
       </View>
     </View>
   );
-}
+};
