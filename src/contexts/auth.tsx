@@ -14,10 +14,13 @@ import React, {
   useState,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AuthSessionType, AuthUserType} from '../types/auth';
 
 type AuthContextType = {
-  user: {detail: any; session: any} | null;
-  setUser: Dispatch<SetStateAction<{detail: any; session: any} | null>>;
+  user: {detail: AuthUserType; session: AuthSessionType} | null;
+  setUser: Dispatch<
+    SetStateAction<{detail: AuthUserType; session: AuthSessionType} | null>
+  >;
 };
 
 // Save to persistent storage
@@ -104,7 +107,7 @@ function useSignIn() {
       .then(response => {
         if ('mfa_join_token' in response.data.data) {
           setMfaSetupToken(response.data.data.mfa_join_token);
-          throw new Error('MFA required');
+          throw new Error('Setup MFA on your computer first');
         } else {
           user_obj = response.data.data.user;
           last_web_session = response.data.data.last_session;
@@ -113,6 +116,7 @@ function useSignIn() {
         }
       })
       .catch(error => {
+        console.log(error.response);
         if (error.response && error.response.data) {
           if ('errors' in error.response.data) {
             if (error.response.data.errors.code === 'TOTPRequired') {
@@ -123,7 +127,7 @@ function useSignIn() {
         }
         throw new Error(error);
       });
-    if (session && 'key' in session) {
+    if (user_obj && session && 'key' in session) {
       // Save to cache
       authCache.save({detail: user_obj, session: session});
       // Set Context

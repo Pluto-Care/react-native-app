@@ -1,6 +1,7 @@
+import {getColors} from '../../styles/styles';
 import * as React from 'react';
 import {Control, Controller, FieldErrors, FieldValues} from 'react-hook-form';
-import {Text, TextInput, View} from 'react-native';
+import {Text, TextInput, View, useColorScheme} from 'react-native';
 
 export interface IInputFieldProps {
   name: string;
@@ -30,13 +31,14 @@ const styles: {[key in PButton_Style]: string} = {
 };
 
 export default function CustomInputField(props: IInputFieldProps) {
+  const colorScheme = useColorScheme() || 'light';
+  const colors = getColors(colorScheme);
+
   return (
-    <View className="pt-3 pb-2 font-sans border-b border-zinc-200">
+    <View className={`pt-3 pb-2 font-sans border-b ${colors.border.gray}`}>
       <View className="flex flex-row px-6">
         <View className="flex flex-row flex-1 gap-1">
-          <Text className="text-zinc-600 dark:text-zinc-300">
-            {props.label}
-          </Text>
+          <Text className={`${colors.text.muted}`}>{props.label}</Text>
           <Text className="text-red-600 dark:text-red-500">*</Text>
         </View>
         <Text className="text-red-600 dark:text-red-500">
@@ -81,7 +83,7 @@ export default function CustomInputField(props: IInputFieldProps) {
             secureTextEntry={props.isPassword}
             className={`px-6 py-1 font-sans text-base ${
               props.errors[props.name] ? styles.danger : styles.default
-            }`}
+            } ${colors.text.foreground} ${colors.bg.input}`}
           />
         )}
         name={props.name}

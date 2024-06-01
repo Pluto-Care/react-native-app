@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form';
 import {SignedIn, SignedOut, useAuth, useSignIn} from '../../contexts/auth';
 import CustomButton from '../../components/ui/CustomButton';
 import CustomInputField from '../../components/ui/CustomInputField';
-import {getColors} from '../../styles';
+import {getColors} from '../../styles/styles';
 import PlainTopbar from '../../features/topbar/PlainTopbar';
 import LinearGradient from 'react-native-linear-gradient';
 import {handleAxiosError} from '../../utils/handleAxiosError';
@@ -26,20 +26,24 @@ export default function LoginScreen({
   }, [context.user, navigation]);
 
   return (
-    <View className="min-h-screen bg-white">
+    <View className={`min-h-screen ${colors.bg.body}`}>
       <SignedOut>
         <View className="h-1/4">
           <LinearGradient
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
-            colors={['#ffedd5', 'rgb(229,244,255)', '#f3e8ff']}
+            colors={
+              colorScheme === 'light'
+                ? ['#ffedd5', '#e5f4ff', '#f3e8ff']
+                : ['#ce653b', '#2b0948']
+            }
             className="h-full">
             <PlainTopbar />
           </LinearGradient>
         </View>
         <View className="px-6">
           <Text
-            className={`${colors.text.primary} mb-6 mt-8 text-lg w-full font-bold`}>
+            className={`${colors.text.foreground} mb-6 mt-8 text-lg w-full font-bold`}>
             Sign in to conitnue
           </Text>
         </View>
@@ -47,7 +51,7 @@ export default function LoginScreen({
       </SignedOut>
       <SignedIn>
         <Text
-          className={`${colors.text.primary} mb-16 w-full text-center font-sans text-xl`}>
+          className={`${colors.text.foreground} mb-16 w-full text-center font-sans text-xl`}>
           You are already signed in!
         </Text>
         <CustomButton
@@ -105,10 +109,12 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
   };
 
   return (
-    <View className="flex flex-col w-full h-80">
+    <View className="flex flex-col w-full h-96">
       {error ? (
         <View className="mb-4">
-          <Text className="px-6 text-base text-red-800">{error}</Text>
+          <Text className={`px-6 text-base ${colors.text.danger}`}>
+            {error}
+          </Text>
         </View>
       ) : (
         <></>
@@ -117,7 +123,7 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
         <TOTPForm onSubmit={onTOTPFilledPress} />
       ) : (
         <>
-          <View className="flex-1 border-t border-zinc-200">
+          <View className={`flex-1 border-t ${colors.border.gray}`}>
             <CustomInputField
               control={control}
               errors={errors}
@@ -134,8 +140,7 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
               isRequired={true}
               label="Password"
             />
-            <Text
-              className={`${colors.text.secondary} mt-6 mb-4 text-base px-6`}>
+            <Text className={`${colors.text.muted} mt-6 mb-4 text-base px-6`}>
               Forgot your password?
             </Text>
           </View>
@@ -154,6 +159,8 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
 }
 
 const TOTPForm = ({onSubmit}: {onSubmit: any}): React.JSX.Element => {
+  const colorScheme = useColorScheme() || 'light';
+  const colors = getColors(colorScheme);
   const {
     control,
     handleSubmit,
@@ -161,7 +168,7 @@ const TOTPForm = ({onSubmit}: {onSubmit: any}): React.JSX.Element => {
   } = useForm();
 
   return (
-    <View className="flex-1 border-t border-zinc-200">
+    <View className={`flex-1 border-t ${colors.border.gray}`}>
       <CustomInputField
         control={control}
         errors={errors}

@@ -1,6 +1,6 @@
 import {View, Text, useColorScheme} from 'react-native';
 import React from 'react';
-import {getColors} from '../../styles';
+import {getColors} from '../../styles/styles';
 
 export default function PlainTopbar() {
   const colorScheme = useColorScheme() || 'light';
@@ -8,7 +8,7 @@ export default function PlainTopbar() {
 
   return (
     <View className="flex justify-center w-full h-16 px-6 place-items-center">
-      <Text className={`${colors.text.primary} text-lg font-bold`}>
+      <Text className={`${colors.text.foreground} text-lg font-bold`}>
         Pluto Health
       </Text>
     </View>
