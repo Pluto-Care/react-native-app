@@ -3,6 +3,7 @@ const ColorStyles = {
     bg: {
       body: 'bg-white',
       input: 'bg-white',
+      muted: 'bg-zinc-50',
     },
     text: {
       foreground: 'text-zinc-950',
@@ -21,6 +22,7 @@ const ColorStyles = {
     bg: {
       body: 'bg-zinc-900',
       input: 'bg-zinc-900',
+      muted: 'bg-zinc-950',
     },
     text: {
       foreground: 'text-zinc-100',
