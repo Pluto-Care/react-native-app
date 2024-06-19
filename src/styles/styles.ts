@@ -7,7 +7,7 @@ const ColorStyles = {
     },
     text: {
       foreground: 'text-zinc-950',
-      muted: 'text-zinc-700',
+      muted: 'text-zinc-600',
       danger: 'text-red-700',
     },
     border: {
@@ -26,7 +26,7 @@ const ColorStyles = {
     },
     text: {
       foreground: 'text-zinc-100',
-      muted: 'text-zinc-300',
+      muted: 'text-zinc-400',
       danger: 'text-red-300',
     },
     border: {

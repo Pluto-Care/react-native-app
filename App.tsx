@@ -12,27 +12,32 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/screens/Login/Screen';
 import {AuthProvider} from './src/contexts/auth';
 import DashboardScreen from './src/screens/Dashboard/Screen';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 const Stack = createNativeStackNavigator();
 
+export const MyQueryClient = new QueryClient();
+
 function App(): React.JSX.Element {
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Login"
-            component={LoginScreen}
-          />
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Dashboard"
-            component={DashboardScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+    <QueryClientProvider client={MyQueryClient}>
+      <AuthProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="Login"
+              component={LoginScreen}
+            />
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="Dashboard"
+              component={DashboardScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
