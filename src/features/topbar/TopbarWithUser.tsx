@@ -1,4 +1,4 @@
-import {View, Text, useColorScheme, Platform} from 'react-native';
+import {View, Text, useColorScheme, Platform, Pressable} from 'react-native';
 import React, {ReactElement, ReactNode} from 'react';
 import {getColors} from '../../styles/styles';
 import {SignedIn, useAuth} from '../../contexts/auth';
@@ -20,8 +20,8 @@ export default function UserTopbar() {
         </View>
         <View>
           <ProfileBadgeMenu>
-            <View
-              className={`flex flex-row items-center px-1 py-1 border rounded-full h-min ${colors.border.gray}`}>
+            <Pressable
+              className={`flex flex-row items-center px-1 py-1 border rounded-full h-min ${colors.border.gray} ${colors.button.opaque}`}>
               <View className="pl-2.5 pr-3">
                 <Text
                   className={`${colors.text.muted} text-xs font-medium text-right`}>
@@ -38,13 +38,14 @@ export default function UserTopbar() {
                       : ['#ce653b', '#2b0948']
                   }
                   className="flex items-center justify-center h-full rounded-full">
-                  <Text className="text-xs font-medium text-center text-white/40">
+                  <Text
+                    className={`text-xs font-medium text-center ${colors.text.foreground} opacity-50`}>
                     {context.user?.detail.first_name?.charAt(0).toUpperCase()}
                     {context.user?.detail.last_name?.charAt(0).toUpperCase()}
                   </Text>
                 </LinearGradient>
               </View>
-            </View>
+            </Pressable>
           </ProfileBadgeMenu>
         </View>
       </View>

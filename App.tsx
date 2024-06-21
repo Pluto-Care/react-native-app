@@ -13,6 +13,7 @@ import LoginScreen from './src/screens/Login/Screen';
 import {AuthProvider} from './src/contexts/auth';
 import DashboardScreen from './src/screens/Dashboard/Screen';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import AppointmentScreen from './src/screens/Dashboard/Appointment/Screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,11 @@ function App(): React.JSX.Element {
               options={{headerShown: false}}
               name="Dashboard"
               component={DashboardScreen}
+            />
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="Appointment"
+              component={AppointmentScreen}
             />
           </Stack.Navigator>
         </NavigationContainer>

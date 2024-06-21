@@ -6,19 +6,17 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+import axios from 'axios';
 import React from 'react';
-import {SignedIn, useAuth, useSignOut} from '../../contexts/auth';
-import UserTopbar from '../../features/topbar/TopbarWithUser';
-import {useMakeOutgoingCall} from '../../hooks/twilio/useMakeOutgoingCall';
-import CustomButton from '../../components/ui/CustomButton';
-import {getColors} from '../../styles/styles';
+import {SignedIn, useAuth, useSignOut} from '@src/contexts/auth';
+import UserTopbar from '@src/features/topbar/TopbarWithUser';
+import {getColors} from '@src/styles/styles';
 import {CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import {ChevronRight, CircleUser, Loader2} from 'lucide-react-native';
 import {useMutation} from '@tanstack/react-query';
-import axios from 'axios';
-import {BACKEND_URL} from '../../config/common';
-import {timePretty} from '../../utils/timeUtils';
-import {formatPhoneNumber} from '../../utils/formatPhoneNumber';
+import {BACKEND_URL} from '@src/config/common';
+import {timePretty} from '@src/utils/timeUtils';
+import {formatPhoneNumber} from '@src/utils/formatPhoneNumber';
 
 export default function DashboardScreen({navigation}: {navigation: any}) {
   const theme = useColorScheme();
@@ -29,18 +27,13 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
   const [date, setDate] = React.useState(new Date().toDateString());
   const [appointments, setAppointments] = React.useState<any[]>([]);
   const {signOut} = useSignOut();
-  const {makeCall} = useMakeOutgoingCall(
-    context.user?.session.key || '',
-    '+17782339602',
-    'number',
-  );
 
   const dateAppointmentMutation = useMutation({
     mutationKey: ['dateAppointment'],
     mutationFn: async (date: string) =>
       user
         ? await axios.get(
-            `${BACKEND_URL}/api/scheduling/appointments/my/list/${date}/`,
+            `${BACKEND_URL}/api/scheduling/appointments/my/date/${date}/`,
             {
               headers: {
                 'Content-Type': 'application/json',
@@ -71,7 +64,7 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
       <View className={`${colors.bg.body} min-h-screen`}>
         <UserTopbar />
         <View className="h-[84px]">
-          <CalendarProvider date={new Date().toDateString()} showTodayButton>
+          <CalendarProvider date={new Date().toDateString()}>
             <WeekCalendar
               onDayPress={day => {
                 let date = day.dateString.split('-');
@@ -118,6 +111,11 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
                       ? 'active:bg-zinc-100'
                       : 'active:bg-zinc-800'
                   }`}
+                  onPress={() => {
+                    navigation.push('Appointment', {
+                      id: appointment.id,
+                    });
+                  }}
                   key={index}>
                   <View
                     className={`w-full flex items-center px-4 py-3 border-t border-b ${colors.border.gray} flex-row`}>

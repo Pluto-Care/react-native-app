@@ -62,7 +62,7 @@ export function dateTimePretty(dt: string) {
     ':' +
     ('0' + x.getMinutes()).slice(-2) +
     ' ' +
-    (x.getHours() > 12 ? 'pm' : 'am')
+    (x.getHours() > 12 ? 'PM' : 'AM')
   );
 }
 
@@ -94,7 +94,7 @@ export function timePretty(dt: string) {
     ':' +
     ('0' + x.getMinutes()).slice(-2) +
     ' ' +
-    (x.getHours() > 12 ? 'pm' : 'am')
+    (x.getHours() > 12 ? 'PM' : 'AM')
   );
 }
 
@@ -135,7 +135,7 @@ export function weekDay(dt: string) {
   return days[x.getDay()];
 }
 
-export function monthPretty(month: number) {
+export function monthPretty(month: number, offset?: number) {
   const monthNames = [
     'January',
     'February',
@@ -150,5 +150,20 @@ export function monthPretty(month: number) {
     'November',
     'December',
   ];
-  return monthNames[month];
+  return monthNames[month + (offset ?? 0)];
+}
+
+export function getAge(birthDate: string) {
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  if (age > 0) {
+    return age + ' years';
+  } else {
+    return m + ' months';
+  }
 }

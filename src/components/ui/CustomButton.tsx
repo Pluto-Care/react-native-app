@@ -1,4 +1,4 @@
-import {Text, Pressable} from 'react-native';
+import {Text, Pressable, View} from 'react-native';
 import React from 'react';
 
 type PButton_Props = {
@@ -6,6 +6,8 @@ type PButton_Props = {
   text: string;
   style: PButton_Style;
   width: 'full' | 'auto';
+  noRoundedCorners?: boolean;
+  icon?: React.ReactNode;
 };
 
 type PButton_Style = 'accent' | 'accent_hollow' | 'primary' | 'primary_hollow';
@@ -33,8 +35,8 @@ const styles: {[key in PButton_Style]: {pressable: string; text: string}} = {
 };
 
 const baseStyle = {
-  pressable: 'rounded-md py-2.5 px-4 shadow-lg',
-  text: 'text-center text-base font-sans-semibold',
+  pressable: 'py-2.5 px-4 shadow-lg',
+  text: 'items-center flex gap-3 justify-center flex-row',
 };
 
 const CustomButton = (props: PButton_Props) => {
@@ -48,11 +50,17 @@ const CustomButton = (props: PButton_Props) => {
     <Pressable
       className={`${styles[props.style].pressable} ${
         baseStyle.pressable
-      } ${width}`}
+      } ${width} ${props.noRoundedCorners ? '' : 'rounded-md'}`}
       onPress={props.onClick}>
-      <Text className={`${styles[props.style].text} ${baseStyle.text}`}>
-        {props.text}
-      </Text>
+      <View className={`${styles[props.style].text} ${baseStyle.text}`}>
+        {props.icon}
+        <Text
+          className={`${
+            styles[props.style].text
+          } text-base font-sans-semibold font-medium`}>
+          {props.text}
+        </Text>
+      </View>
     </Pressable>
   );
 };
