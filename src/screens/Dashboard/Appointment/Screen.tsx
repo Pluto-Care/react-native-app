@@ -67,21 +67,13 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
   console.log(patient_query.data);
   console.log(appointment_query.data);
 
-  const {makeCall} = patient_query.data
-    ? useMakeOutgoingCall(
-        context.user?.session.key || '',
-        '+1' + patient_query.data.phone,
-        'number',
-      )
-    : {makeCall: () => {}};
-
   return (
     <SignedIn>
       <View className={`${colors.bg.body} flex flex-col h-full max-h-screen`}>
         <View className={`${colors.border.gray} border-b`}>
           <PlainTopbar
             title={
-              appointment_query.data
+              patient_query.data
                 ? patient_query.data.first_name +
                   ' ' +
                   patient_query.data.last_name
@@ -151,8 +143,13 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
               text="Start Call"
               width="full"
               onClick={() => {
-                if (patient_query.data.phone) {
-                  makeCall();
+                if (appointment_query.isSuccess) {
+                  navigation.push('Calling', {
+                    phone: patient_query.data.phone,
+                    first_name: patient_query.data.first_name,
+                    last_name: patient_query.data.last_name,
+                    end_time_expected: appointment_query.data.end_time,
+                  });
                 }
               }}
               icon={<PhoneCall size={16} color={'white'} />}

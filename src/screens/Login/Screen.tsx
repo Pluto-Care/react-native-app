@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, useColorScheme} from 'react-native';
+import {ScrollView, View, useColorScheme} from 'react-native';
 import {Text} from 'react-native';
 import {useForm} from 'react-hook-form';
 import {SignedIn, SignedOut, useAuth, useSignIn} from '../../contexts/auth';
@@ -26,44 +26,38 @@ export default function LoginScreen({
   }, [context.user, navigation]);
 
   return (
-    <View className={`min-h-screen ${colors.bg.body}`}>
-      <SignedOut>
-        <View className="h-1/4">
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            colors={
-              colorScheme === 'light'
-                ? ['#ffedd5', '#e5f4ff', '#f3e8ff']
-                : ['#ce653b', '#2b0948']
-            }
-            className="h-full">
-            <PlainTopbar />
-          </LinearGradient>
-        </View>
-        <View className="px-6">
+    <ScrollView>
+      <View className={`min-h-screen ${colors.bg.body}`}>
+        <SignedOut>
+          <View className="h-1/4">
+            <LinearGradient
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              colors={
+                colorScheme === 'light'
+                  ? ['#ffedd5', '#e5f4ff', '#f3e8ff']
+                  : ['#ce653b', '#2b0948']
+              }
+              className="h-full">
+              <PlainTopbar />
+            </LinearGradient>
+          </View>
+          <View className="px-6">
+            <Text
+              className={`${colors.text.foreground} mb-6 mt-8 text-lg w-full font-bold`}>
+              Sign in to conitnue
+            </Text>
+          </View>
+          <SignInForm navigation={navigation} />
+        </SignedOut>
+        <SignedIn>
           <Text
-            className={`${colors.text.foreground} mb-6 mt-8 text-lg w-full font-bold`}>
-            Sign in to conitnue
+            className={`${colors.text.foreground} mb-16 w-full text-center font-sans-semibold text-base`}>
+            Loading your dashboard...
           </Text>
-        </View>
-        <SignInForm navigation={navigation} />
-      </SignedOut>
-      <SignedIn>
-        <Text
-          className={`${colors.text.foreground} mb-16 w-full text-center font-sans text-xl`}>
-          You are already signed in!
-        </Text>
-        <CustomButton
-          text="Go to Dashboard"
-          style="accent_hollow"
-          width="full"
-          onClick={() => {
-            navigation.navigate('Dashboard');
-          }}
-        />
-      </SignedIn>
-    </View>
+        </SignedIn>
+      </View>
+    </ScrollView>
   );
 }
 

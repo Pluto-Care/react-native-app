@@ -60,9 +60,9 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
   }
 
   return (
-    <SignedIn>
-      <View className={`${colors.bg.body} min-h-screen`}>
-        <UserTopbar />
+    <View className={`${colors.bg.body} min-h-screen`}>
+      <UserTopbar navigation={navigation} />
+      <SignedIn>
         <View className="h-[84px]">
           <CalendarProvider date={new Date().toDateString()}>
             <WeekCalendar
@@ -150,7 +150,7 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
             <></>
           )}
         </ScrollView>
-      </View>
-    </SignedIn>
+      </SignedIn>
+    </View>
   );
 }

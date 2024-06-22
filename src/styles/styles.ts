@@ -4,11 +4,14 @@ const ColorStyles = {
       body: 'bg-white',
       input: 'bg-white',
       muted: 'bg-zinc-50',
+      accent: 'bg-accent-500',
+      danger: 'bg-red-500',
     },
     text: {
       foreground: 'text-zinc-950',
       muted: 'text-zinc-600',
       danger: 'text-red-700',
+      accent: 'text-accent-600',
     },
     border: {
       gray: 'border-zinc-300',
@@ -28,11 +31,14 @@ const ColorStyles = {
       body: 'bg-zinc-900',
       input: 'bg-zinc-900',
       muted: 'bg-zinc-950',
+      accent: 'bg-accent-700',
+      danger: 'bg-red-700',
     },
     text: {
       foreground: 'text-zinc-100',
       muted: 'text-zinc-400',
       danger: 'text-red-300',
+      accent: 'text-accent-400',
     },
     border: {
       gray: 'border-zinc-700',

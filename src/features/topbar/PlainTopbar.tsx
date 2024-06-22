@@ -29,7 +29,7 @@ export default function PlainTopbar(props: PlainTopbarProps) {
       <View>
         <Text
           className={`${colors.text.foreground} ${
-            props.subtitle ? 'text-base' : 'text-lg'
+            props.subtitle ? 'text-[17px]' : 'text-lg'
           } font-sans font-bold`}>
           {props.title ?? 'Pluto Health'}
         </Text>

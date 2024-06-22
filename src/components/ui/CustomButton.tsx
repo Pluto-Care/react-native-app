@@ -10,7 +10,12 @@ type PButton_Props = {
   icon?: React.ReactNode;
 };
 
-type PButton_Style = 'accent' | 'accent_hollow' | 'primary' | 'primary_hollow';
+type PButton_Style =
+  | 'accent'
+  | 'accent_hollow'
+  | 'primary'
+  | 'primary_hollow'
+  | 'accent_hollow_no_border';
 const styles: {[key in PButton_Style]: {pressable: string; text: string}} = {
   accent: {
     pressable:
@@ -31,6 +36,11 @@ const styles: {[key in PButton_Style]: {pressable: string; text: string}} = {
     pressable:
       'bg-transparent border border-black dark:border-white text-black dark:text-white active:bg-zinc-500/10 hover:bg-zinc-500/10',
     text: 'text-black dark:text-white',
+  },
+  accent_hollow_no_border: {
+    pressable:
+      'bg-transparent dark:bg-zinc-950 text-gray-400 dark:text-gray-600 active:bg-gray-200 hover:bg-gray-200 dark:active:bg-gray-700 dark:hover:bg-gray-700',
+    text: 'text-accent-600 dark:text-accent-300',
   },
 };
 

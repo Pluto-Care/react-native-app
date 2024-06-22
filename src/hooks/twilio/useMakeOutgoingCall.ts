@@ -13,10 +13,6 @@ export function useMakeOutgoingCall(
   const makeCall = async () => {
     const token = await getTwimlToken(auth_token);
 
-    console.log('Making phone call...');
-    console.log('Token:', token);
-    console.log('To:', to);
-
     const outgoingCallResult = await settlePromise(
       voice.connect(token, {
         params: {
@@ -34,21 +30,10 @@ export function useMakeOutgoingCall(
 
     const outgoingCall = outgoingCallResult.value;
 
-    console.log('Outgoing call:', outgoingCall);
-
     const uuid = outgoingCall['_uuid'];
 
-    const callInfo = getCallInfo(outgoingCall);
     callMap.set(uuid, outgoingCall);
 
-    console.log('Call info:', callInfo);
-
-    outgoingCall.on(TwilioCall.Event.ConnectFailure, error =>
-      console.error('ConnectFailure:', error),
-    );
-    outgoingCall.on(TwilioCall.Event.Reconnecting, error =>
-      console.error('Reconnecting:', error),
-    );
     outgoingCall.on(TwilioCall.Event.Disconnected, error => {
       // The type of error here is "TwilioError | undefined".
       if (error) {
@@ -62,15 +47,7 @@ export function useMakeOutgoingCall(
       AsyncStorage.removeItem(callSid);
     });
 
-    Object.values(TwilioCall.Event).forEach(callEvent => {
-      outgoingCall.on(callEvent, () => {
-        // set active call info
-        console.log('Call event:', callEvent);
-      });
-    });
-
     outgoingCall.once(TwilioCall.Event.Connected, () => {
-      console.log('Call connected...');
       const callSid = outgoingCall.getSid();
       if (typeof callSid !== 'string') {
         return;
@@ -81,11 +58,9 @@ export function useMakeOutgoingCall(
       if (typeof info.initialConnectedTimestamp === 'undefined') {
         info.initialConnectedTimestamp = Date.now();
       }
-      // set active call info
-      console.log('Call connected:', info);
     });
 
-    return callInfo;
+    return {outgoingCall};
   };
 
   return {makeCall};
