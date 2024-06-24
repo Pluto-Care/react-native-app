@@ -1,16 +1,15 @@
+/* eslint-disable radix */
 import {useRoute} from '@react-navigation/native';
 import CustomButton from '@src/components/ui/CustomButton';
 import {BACKEND_URL} from '@src/config/common';
 import {SignedIn, useAuth} from '@src/contexts/auth';
 import PlainTopbar from '@src/features/topbar/PlainTopbar';
-import {useMakeOutgoingCall} from '@src/hooks/twilio/useMakeOutgoingCall';
 import {getColors} from '@src/styles/styles';
 import {
   datePretty,
   getAge,
   monthPretty,
   timePretty,
-  timeSince,
 } from '@src/utils/timeUtils';
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
@@ -81,9 +80,9 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
             }
             subtitle={
               appointment_query.data
-                ? timePretty(appointment_query.data.start_time) +
+                ? timePretty(appointment_query.data.appointment.start_time) +
                   ' — ' +
-                  datePretty(appointment_query.data.start_time)
+                  datePretty(appointment_query.data.appointment.start_time)
                 : 'Loading...'
             }
             showBackButton={true}
@@ -135,7 +134,7 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
               </Text>
               <Text
                 className={`text-sm ${colors.text.foreground} mt-2 text-justify`}>
-                {appointment_query.data.reason}
+                {appointment_query.data.appointment.reason}
               </Text>
             </ScrollView>
             <CustomButton
@@ -148,7 +147,8 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
                     phone: patient_query.data.phone,
                     first_name: patient_query.data.first_name,
                     last_name: patient_query.data.last_name,
-                    end_time_expected: appointment_query.data.end_time,
+                    end_time_expected:
+                      appointment_query.data.appointment.end_time,
                   });
                 }
               }}

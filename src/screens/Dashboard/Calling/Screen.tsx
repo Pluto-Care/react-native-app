@@ -40,23 +40,20 @@ export default function CallScreen({navigation}: {navigation: any}) {
     | null
   >(null);
 
-  const {makeCall} = React.useMemo(
-    () =>
-      useMakeOutgoingCall(
-        context.user?.session.key || '',
-        '+1' + params.phone,
-        'number',
-      ),
-    [context.user?.session.key, params.phone],
+  const {makeCall} = useMakeOutgoingCall(
+    context.user?.session.key || '',
+    '+1' + params.phone,
+    'number',
   );
 
   React.useEffect(() => {
     if (!call) {
       console.log('Making call....');
-      makeCall().then(call => {
-        setCall(call);
+      makeCall().then(c => {
+        setCall(c);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Call Status Polling
@@ -83,6 +80,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
         setCallTime(
           `${hours > 0 ? hours + ':' : ''}${
             minutes < 10 ? '0' + minutes : minutes
+            // eslint-disable-next-line radix
           }:${parseInt(seconds) < 10 ? '0' + seconds : seconds}`,
         );
       }
@@ -92,7 +90,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
     return () => {
       clearInterval(interval);
     };
-  }, [call?.outgoingCall]);
+  }, [call?.outgoingCall, navigation]);
 
   return (
     <SignedIn>
@@ -130,7 +128,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
                       call?.outgoingCall?.mute(true);
                     }}
                     isToggled={false}
-                    iconOn={<MicOff size={20} className={`text-white`} />}
+                    iconOn={<MicOff size={20} className={'text-white'} />}
                     iconOff={
                       <Mic size={20} className={`${colors.text.accent}`} />
                     }
@@ -145,7 +143,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
                       console.log('Speaker On');
                     }}
                     isToggled={false}
-                    iconOn={<Volume2 size={20} className={`text-white`} />}
+                    iconOn={<Volume2 size={20} className={'text-white'} />}
                     iconOff={
                       <Volume2 size={20} className={`${colors.text.accent}`} />
                     }
@@ -160,7 +158,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
                       call?.outgoingCall?.hold(true);
                     }}
                     isToggled={false}
-                    iconOn={<Phone size={20} className={`text-white`} />}
+                    iconOn={<Phone size={20} className={'text-white'} />}
                     iconOff={
                       <CirclePause
                         size={22}
@@ -176,7 +174,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
                     onPress={() => {
                       call?.outgoingCall?.disconnect();
                     }}>
-                    <PhoneOff size={20} className={`text-white`} />
+                    <PhoneOff size={20} className={'text-white'} />
                   </Pressable>
                 </View>
               </View>
