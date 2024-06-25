@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import {ScrollView, View, useColorScheme} from 'react-native';
-import {Text} from 'react-native';
 import {useForm} from 'react-hook-form';
 import {SignedIn, SignedOut, useAuth, useSignIn} from '../../contexts/auth';
 import CustomButton from '../../components/ui/CustomButton';
 import CustomInputField from '../../components/ui/CustomInputField';
-import {getColors} from '../../styles/styles';
+import {getTwColors} from '../../styles/styles';
 import PlainTopbar from '../../features/topbar/PlainTopbar';
 import LinearGradient from 'react-native-linear-gradient';
 import {handleAxiosError} from '../../utils/handleAxiosError';
+import {Button} from '@src/components/ui/button';
+import {Text} from '@src/components/ui/text';
 
 export default function LoginScreen({
   navigation,
@@ -16,7 +17,7 @@ export default function LoginScreen({
   navigation: any;
 }): React.JSX.Element {
   const colorScheme = useColorScheme() || 'light';
-  const colors = getColors(colorScheme);
+  const colors = getTwColors(colorScheme);
   const context = useAuth();
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function LoginScreen({
 
 function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
   const colorScheme = useColorScheme() || 'light';
-  const colors = getColors(colorScheme);
+  const colors = getTwColors(colorScheme);
   const [isWaiting, setIsWaiting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const {signIn, mfaRequired} = useSignIn();
@@ -139,12 +140,9 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
             </Text>
           </View>
           <View className="px-4 my-6">
-            <CustomButton
-              style="accent"
-              text="Continue"
-              width="full"
-              onClick={handleSubmit(onSignInPress)}
-            />
+            <Button variant={'default'} onPress={handleSubmit(onSignInPress)}>
+              <Text>Continue</Text>
+            </Button>
           </View>
         </>
       )}
@@ -154,7 +152,7 @@ function SignInForm({navigation}: {navigation: any}): React.JSX.Element {
 
 const TOTPForm = ({onSubmit}: {onSubmit: any}): React.JSX.Element => {
   const colorScheme = useColorScheme() || 'light';
-  const colors = getColors(colorScheme);
+  const colors = getTwColors(colorScheme);
   const {
     control,
     handleSubmit,

@@ -1,6 +1,9 @@
+const {hairlineWidth} = require('nativewind/theme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
+  presets: [require('nativewind/preset')],
   theme: {
     extend: {
       fontFamily: {
@@ -8,19 +11,42 @@ module.exports = {
         'sans-semibold': ['Inter-SemiBold', 'sans-serif'],
       },
       colors: {
-        accent: {
-          50: '#eef7ff',
-          100: '#d9ecff',
-          200: '#bcdfff',
-          300: '#8eccff',
-          400: '#58afff',
-          500: '#328dff',
-          600: '#2372f5',
-          700: '#1457e1',
-          800: '#1746b6',
-          900: '#193e8f',
-          950: '#142757',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+      },
+      borderWidth: {
+        hairline: hairlineWidth(),
       },
       height: {
         18: '5rem',

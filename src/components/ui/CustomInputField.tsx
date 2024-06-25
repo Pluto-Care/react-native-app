@@ -1,4 +1,4 @@
-import {getColors} from '../../styles/styles';
+import {getTwColors} from '../../styles/styles';
 import * as React from 'react';
 import {Control, Controller, FieldErrors, FieldValues} from 'react-hook-form';
 import {Text, TextInput, View, useColorScheme} from 'react-native';
@@ -32,7 +32,7 @@ const styles: {[key in PButton_Style]: string} = {
 
 export default function CustomInputField(props: IInputFieldProps) {
   const colorScheme = useColorScheme() || 'light';
-  const colors = getColors(colorScheme);
+  const colors = getTwColors(colorScheme);
 
   return (
     <View className={`pt-3 pb-2 font-sans border-b ${colors.border.gray}`}>

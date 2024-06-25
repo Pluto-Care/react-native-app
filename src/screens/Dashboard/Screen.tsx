@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import React from 'react';
-import {SignedIn, useAuth, useSignOut} from '@src/contexts/auth';
+import {SignedIn, useAuth} from '@src/contexts/auth';
 import UserTopbar from '@src/features/topbar/TopbarWithUser';
-import {getColors} from '@src/styles/styles';
+import {getColors, getTwColors} from '@src/styles/styles';
 import {CalendarProvider, WeekCalendar} from 'react-native-calendars';
-import {ChevronRight, CircleUser, Loader2} from 'lucide-react-native';
+import {ChevronRight, CircleUser} from 'lucide-react-native';
 import {useMutation} from '@tanstack/react-query';
 import {BACKEND_URL} from '@src/config/common';
 import {timePretty} from '@src/utils/timeUtils';
@@ -22,18 +22,17 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
   const theme = useColorScheme();
   const {user} = useAuth();
   const colorScheme = useColorScheme() || 'light';
-  const colors = getColors(colorScheme);
-  const context = useAuth();
+  const twc = getTwColors(colorScheme);
+  const color = getColors(colorScheme);
   const [date, setDate] = React.useState(new Date().toDateString());
   const [appointments, setAppointments] = React.useState<any[]>([]);
-  const {signOut} = useSignOut();
 
   const dateAppointmentMutation = useMutation({
     mutationKey: ['dateAppointment'],
-    mutationFn: async (date: string) =>
+    mutationFn: async (d: string) =>
       user
         ? await axios.get(
-            `${BACKEND_URL}/api/scheduling/appointments/my/date/${date}/`,
+            `${BACKEND_URL}/api/scheduling/appointments/my/date/${d}/`,
             {
               headers: {
                 'Content-Type': 'application/json',
@@ -52,23 +51,23 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
   });
 
   if (dateAppointmentMutation.isIdle && user) {
-    let date = new Date();
+    let d = new Date();
     const formattedDate = `${
-      date.getMonth() + 1
-    }-${date.getDate()}-${date.getFullYear()}`; // MM-DD-YYYY
+      d.getMonth() + 1
+    }-${d.getDate()}-${d.getFullYear()}`; // MM-DD-YYYY
     dateAppointmentMutation.mutate(formattedDate);
   }
 
   return (
-    <View className={`${colors.bg.body} min-h-screen`}>
+    <View className={`${twc.bg.body} min-h-screen`}>
       <UserTopbar navigation={navigation} />
       <SignedIn>
         <View className="h-[84px]">
           <CalendarProvider date={new Date().toDateString()}>
             <WeekCalendar
               onDayPress={day => {
-                let date = day.dateString.split('-');
-                const formattedDate = `${date[1]}-${date[2]}-${date[0]}`; // MM-DD-YYYY
+                let d = day.dateString.split('-');
+                const formattedDate = `${d[1]}-${d[2]}-${d[0]}`; // MM-DD-YYYY
                 setDate(
                   new Date(day.dateString)
                     .toUTCString()
@@ -81,13 +80,13 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
             />
           </CalendarProvider>
         </View>
-        <ScrollView className={`${colors.bg.muted}`}>
+        <ScrollView className={`${twc.bg.muted}`}>
           <View className="flex flex-row items-center my-6">
             <Text
-              className={`${colors.text.foreground} flex-1 text-lg font-bold px-6`}>
+              className={`${twc.text.foreground} flex-1 text-lg font-bold px-6`}>
               Assigned Clients
             </Text>
-            <Text className={`${colors.text.muted} text-sm px-6`}>{date}</Text>
+            <Text className={`${twc.text.muted} text-sm px-6`}>{date}</Text>
           </View>
           {dateAppointmentMutation.isPending ? (
             <View className="flex items-center w-full">
@@ -99,14 +98,14 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
           ) : dateAppointmentMutation.isSuccess ? (
             appointments.length === 0 ? (
               <View className="w-full">
-                <Text className={`${colors.text.muted} text-sm px-6`}>
+                <Text className={`${twc.text.muted} text-sm px-6`}>
                   No appointments found for the selected date.
                 </Text>
               </View>
             ) : (
               appointments.map((appointment, index) => (
                 <Pressable
-                  className={`w-full ${colors.bg.body} ${
+                  className={`w-full ${twc.bg.body} ${
                     theme === 'light'
                       ? 'active:bg-zinc-100'
                       : 'active:bg-zinc-800'
@@ -118,28 +117,25 @@ export default function DashboardScreen({navigation}: {navigation: any}) {
                   }}
                   key={index}>
                   <View
-                    className={`w-full flex items-center px-4 py-3 border-t border-b ${colors.border.gray} flex-row`}>
+                    className={`w-full flex items-center px-4 py-3 border-t border-b ${twc.border.gray} flex-row`}>
                     <CircleUser
                       size={28}
                       strokeWidth={1.5}
-                      className={`${colors.text.muted}`}
+                      color={color.icon.muted}
                     />
                     <View className="flex flex-col flex-1 px-5">
-                      <Text className={`${colors.text.foreground} text-base `}>
+                      <Text className={`${twc.text.foreground} text-base `}>
                         {appointment.patient.first_name}{' '}
                         {appointment.patient.last_name}
                       </Text>
-                      <Text className={`${colors.text.muted} text-sm`}>
+                      <Text className={`${twc.text.muted} text-sm`}>
                         +1 {formatPhoneNumber(appointment.patient.phone)}
                       </Text>
                     </View>
-                    <Text className={`${colors.text.muted} pr-4 uppercase`}>
+                    <Text className={`${twc.text.muted} pr-4 uppercase`}>
                       {timePretty(appointment.start_time)}
                     </Text>
-                    <ChevronRight
-                      size={24}
-                      className={`${colors.text.foreground}`}
-                    />
+                    <ChevronRight size={24} color={color.icon.muted} />
                   </View>
                 </Pressable>
               ))

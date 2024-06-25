@@ -1,6 +1,6 @@
 import {View, Text, useColorScheme, Pressable} from 'react-native';
 import React from 'react';
-import {getColors} from '../../styles/styles';
+import {getColors, getTwColors} from '../../styles/styles';
 import {ArrowLeft} from 'lucide-react-native';
 
 interface PlainTopbarProps {
@@ -12,7 +12,8 @@ interface PlainTopbarProps {
 
 export default function PlainTopbar(props: PlainTopbarProps) {
   const colorScheme = useColorScheme() || 'light';
-  const colors = getColors(colorScheme);
+  const twc = getTwColors(colorScheme);
+  const color = getColors(colorScheme);
 
   return (
     <View
@@ -22,19 +23,19 @@ export default function PlainTopbar(props: PlainTopbarProps) {
       {props.showBackButton && (
         <Pressable
           onPress={props.backButtonAction}
-          className={`mr-3 p-2 ${colors.button.opaque} aspect-square flex rounded-full justify-center`}>
-          <ArrowLeft size={24} className={colors.text.foreground} />
+          className={`mr-3 p-2 ${twc.button.opaque} aspect-square flex rounded-full justify-center`}>
+          <ArrowLeft size={24} color={color.icon.foreground} />
         </Pressable>
       )}
       <View>
         <Text
-          className={`${colors.text.foreground} ${
+          className={`${twc.text.foreground} ${
             props.subtitle ? 'text-[17px]' : 'text-lg'
           } font-sans font-bold`}>
           {props.title ?? 'Pluto Health'}
         </Text>
         {props.subtitle && (
-          <Text className={`${colors.text.muted} font-sans text-xs`}>
+          <Text className={`${twc.text.muted} font-sans text-xs`}>
             {props.subtitle}
           </Text>
         )}

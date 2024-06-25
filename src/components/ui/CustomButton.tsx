@@ -19,8 +19,8 @@ type PButton_Style =
 const styles: {[key in PButton_Style]: {pressable: string; text: string}} = {
   accent: {
     pressable:
-      'bg-accent-600 border border-accent-600 active:bg-accent-700 hover:bg-accent-700',
-    text: 'text-white',
+      'bg-accent-foreground border border-accent-foreground active:bg-accent-foreground/90 hover:bg-accent-foreground/90',
+    text: 'text-white dark:text-black',
   },
   accent_hollow: {
     pressable:

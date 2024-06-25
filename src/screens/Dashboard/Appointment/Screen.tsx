@@ -4,7 +4,7 @@ import CustomButton from '@src/components/ui/CustomButton';
 import {BACKEND_URL} from '@src/config/common';
 import {SignedIn, useAuth} from '@src/contexts/auth';
 import PlainTopbar from '@src/features/topbar/PlainTopbar';
-import {getColors} from '@src/styles/styles';
+import {getTwColors} from '@src/styles/styles';
 import {
   datePretty,
   getAge,
@@ -27,7 +27,7 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
   const params = useRoute().params as any;
   const context = useAuth();
   const theme = useColorScheme();
-  const colors = getColors(theme || 'light');
+  const colors = getTwColors(theme || 'light');
 
   const appointment_query = useQuery({
     queryKey: ['appointment', params.id],
@@ -134,7 +134,7 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
               </Text>
               <Text
                 className={`text-sm ${colors.text.foreground} mt-2 text-justify`}>
-                {appointment_query.data.appointment.reason}
+                {appointment_query.data?.appointment.reason}
               </Text>
             </ScrollView>
             <CustomButton

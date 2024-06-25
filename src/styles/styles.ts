@@ -1,4 +1,4 @@
-const ColorStyles = {
+const TwColorStyles = {
   light: {
     bg: {
       body: 'bg-white',
@@ -51,6 +51,27 @@ const ColorStyles = {
       foreground: 'text-white bg-zinc-800 active:bg-zinc-700 hover:bg-zinc-700',
       danger: 'text-white bg-red-500 active:bg-red-400 hover:bg-red-400',
       opaque: 'bg-transparent active:bg-white/5 hover:bg-white/5',
+    },
+  },
+};
+
+export const getTwColors = (colorScheme: 'light' | 'dark') => {
+  return TwColorStyles[colorScheme];
+};
+
+const ColorStyles = {
+  light: {
+    icon: {
+      foreground: '#000',
+      muted: '#aaa',
+      accent: '#2372f5',
+    },
+  },
+  dark: {
+    icon: {
+      foreground: '#fff',
+      muted: '#bbb',
+      accent: '#328dff',
     },
   },
 };

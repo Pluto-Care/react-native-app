@@ -7,7 +7,8 @@ user_home := $(shell powershell -Command "[System.Environment]::GetFolderPath('U
 .PHONY: all
 
 run:
-	npm run start
+	yarn install
+	yarn start
 
 avd-windows:
 	$(user_home)\Android-SDK\emulator\emulator.exe -avd $(avd_name)

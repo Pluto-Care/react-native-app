@@ -1,4 +1,4 @@
-import {getColors} from '@src/styles/styles';
+import {getTwColors} from '@src/styles/styles';
 import React from 'react';
 import {Pressable, Text, View, useColorScheme} from 'react-native';
 
@@ -13,7 +13,7 @@ type Props = {
 
 export default function CallToggleButton(props: Props) {
   const theme = useColorScheme();
-  const colors = getColors(theme || 'light');
+  const colors = getTwColors(theme || 'light');
   const [isToggled, setIsToggled] = React.useState(false);
 
   const handlePress = () => {

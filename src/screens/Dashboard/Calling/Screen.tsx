@@ -3,7 +3,7 @@ import CallToggleButton from '@src/components/ui/CallToggleButton';
 import CustomButton from '@src/components/ui/CustomButton';
 import {SignedIn, useAuth} from '@src/contexts/auth';
 import {useMakeOutgoingCall} from '@src/hooks/twilio/useMakeOutgoingCall';
-import {getColors} from '@src/styles/styles';
+import {getTwColors} from '@src/styles/styles';
 import {Call} from '@twilio/voice-react-native-sdk';
 import {
   ArrowLeft,
@@ -20,7 +20,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export default function CallScreen({navigation}: {navigation: any}) {
   const theme = useColorScheme();
-  const colors = getColors(theme || 'light');
+  const colors = getTwColors(theme || 'light');
   const params = useRoute().params as any;
   const context = useAuth();
   const [callStatus, setCallStatus] = React.useState<string>('');
