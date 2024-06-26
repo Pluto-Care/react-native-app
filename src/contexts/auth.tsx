@@ -21,6 +21,8 @@ type AuthContextType = {
   setUser: Dispatch<
     SetStateAction<{detail: AuthUserType; session: AuthSessionType} | null>
   >;
+  isAuthenticated: boolean | null;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean | null>>;
 };
 
 // Save to persistent storage
@@ -58,6 +60,9 @@ function useAuth(): AuthContextType {
     authCache.get().then(value => {
       if (value && 'session' in value && 'key' in value.session) {
         context.setUser(value);
+        context.setIsAuthenticated(true);
+      } else {
+        context.setIsAuthenticated(false);
       }
     });
   }
@@ -66,30 +71,42 @@ function useAuth(): AuthContextType {
 
 const AuthProvider = (props: {children: ReactNode}): ReactElement => {
   const [user, setUser] = useState<AuthContextType['user']>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  return <AuthContext.Provider {...props} value={{user, setUser}} />;
+  return (
+    <AuthContext.Provider
+      {...props}
+      value={{user, setUser, isAuthenticated, setIsAuthenticated}}
+    />
+  );
 };
 
 const SignedIn = (props: {children: ReactNode}): ReactElement => {
-  const {user} = useAuth();
-  return user ? <>{props.children}</> : <></>;
+  const {isAuthenticated} = useAuth();
+  return isAuthenticated ? <>{props.children}</> : <></>;
 };
 
 const SignedOut = (props: {children: ReactNode}): ReactElement => {
-  const {user} = useAuth();
-  return user ? <></> : <>{props.children}</>;
+  const {isAuthenticated} = useAuth();
+  return isAuthenticated === true ? (
+    <></>
+  ) : isAuthenticated === false ? (
+    <>{props.children}</>
+  ) : (
+    <></>
+  );
 };
 
 function useSignIn() {
   const [mfaSetupToken, setMfaSetupToken] = useState<string | null>(null);
   const [mfaRequired, setMfaRequired] = useState<boolean>(false);
-  const {user, setUser} = useAuth();
+  const {user, setUser, isAuthenticated, setIsAuthenticated} = useAuth();
 
   const signIn = async (email: string, password: string, token?: string) => {
     if (!email || !password) {
       throw new Error('Email and password are required');
     }
-    if (user) {
+    if (user && isAuthenticated) {
       throw new Error('User is already signed in');
     }
     let user_obj, last_web_session, last_app_session, session;
@@ -132,6 +149,7 @@ function useSignIn() {
       authCache.save({detail: user_obj, session: session});
       // Set Context
       setUser({detail: user_obj, session: session});
+      setIsAuthenticated(true);
       return {user_obj, session, last_web_session, last_app_session};
     }
     throw new Error('Sign in failed');
@@ -141,7 +159,7 @@ function useSignIn() {
 }
 
 function useSignOut() {
-  const {user, setUser} = useAuth();
+  const {user, setUser, setIsAuthenticated} = useAuth();
 
   const signOut = async () => {
     if (!user) {
@@ -164,6 +182,7 @@ function useSignOut() {
       });
     authCache.save(null);
     setUser(null);
+    setIsAuthenticated(false);
   };
 
   return {signOut};

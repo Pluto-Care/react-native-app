@@ -5,5 +5,6 @@ module.exports = {
     'dot-notation': 'off',
     curly: 'off',
     'prettier/prettier': 'off',
+    'react-native/no-inline-styles': 'off',
   },
 };

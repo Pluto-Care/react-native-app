@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {ScrollView, View, useColorScheme} from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  View,
+  useColorScheme,
+} from 'react-native';
+import Logo from '@src/assets/icon.svg';
 import {useForm} from 'react-hook-form';
 import {SignedIn, SignedOut, useAuth, useSignIn} from '../../contexts/auth';
 import CustomButton from '../../components/ui/CustomButton';
@@ -10,6 +16,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {handleAxiosError} from '../../utils/handleAxiosError';
 import {Button} from '@src/components/ui/button';
 import {Text} from '@src/components/ui/text';
+import Animated, {FadeInDown} from 'react-native-reanimated';
 
 export default function LoginScreen({
   navigation,
@@ -52,10 +59,17 @@ export default function LoginScreen({
           <SignInForm navigation={navigation} />
         </SignedOut>
         <SignedIn>
-          <Text
-            className={`${colors.text.foreground} mb-16 w-full text-center font-sans-semibold text-base`}>
-            Loading your dashboard...
-          </Text>
+          <View className="flex items-center justify-center h-full gap-10">
+            <Animated.View entering={FadeInDown.duration(300)}>
+              <Logo width={140} height={140} />
+            </Animated.View>
+            <Animated.View entering={FadeInDown.duration(300).delay(400)}>
+              <ActivityIndicator
+                size="large"
+                className="text-accent-foreground"
+              />
+            </Animated.View>
+          </View>
         </SignedIn>
       </View>
     </ScrollView>

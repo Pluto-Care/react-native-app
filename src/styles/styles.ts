@@ -1,3 +1,5 @@
+import {black, white} from 'tailwindcss/colors';
+
 const TwColorStyles = {
   light: {
     bg: {
@@ -64,14 +66,18 @@ const ColorStyles = {
     icon: {
       foreground: '#000',
       muted: '#aaa',
-      accent: '#2372f5',
+      accent: '#576bdb',
+      white: '#fff',
+      black: '#000',
     },
   },
   dark: {
     icon: {
       foreground: '#fff',
       muted: '#bbb',
-      accent: '#328dff',
+      accent: '#758aff',
+      white: '#fff',
+      black: '#000',
     },
   },
 };
