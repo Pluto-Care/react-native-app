@@ -44,11 +44,11 @@ export default function UserTopbar({navigation}: {navigation: any}) {
                     </Text>
                   </LinearGradient>
                 </View>
-                <View className="pl-3 pr-3 -mt-0.5">
-                  <Text className="text-base font-bold text-foreground">
+                <View className="pl-3 pr-3 -mt-px">
+                  <Text className="text-[15px] font-bold text-foreground">
                     Hello, {context.user?.detail.first_name}
                   </Text>
-                  <Text className="text-xs text-muted-foreground">
+                  <Text className="text-[11px] text-muted-foreground">
                     Welcome Back
                   </Text>
                 </View>
@@ -73,20 +73,20 @@ export default function UserTopbar({navigation}: {navigation: any}) {
                     />
                   </Pressable>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className="z-50 mx-6">
                   <DropdownMenuGroup>
-                    <DropdownMenuItem
-                      className="flex flex-row items-center"
-                      onPress={() => {
-                        console.log('Logout');
-                        signOut();
-                      }}
-                      closeOnPress={true}>
-                      <LogOutIcon size={14} color={color.icon.foreground} />
-                      <Text
-                        className={`${twc.text.foreground} pl-2 font-sans-semibold text-sm`}>
-                        Logout
-                      </Text>
+                    <DropdownMenuItem closeOnPress={true}>
+                      <Pressable
+                        className="flex flex-row items-center"
+                        onPress={() => {
+                          signOut();
+                        }}>
+                        <LogOutIcon size={14} color={color.icon.foreground} />
+                        <Text
+                          className={`${twc.text.foreground} pl-2 font-sans-semibold text-sm`}>
+                          Logout
+                        </Text>
+                      </Pressable>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                 </DropdownMenuContent>

@@ -12,11 +12,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import LoginScreen from './src/screens/Login/Screen';
 import {AuthProvider} from './src/contexts/auth';
-import DashboardScreen from './src/screens/Dashboard/Screen';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import AppointmentScreen from './src/screens/Dashboard/Appointment/Screen';
 import CallScreen from '@src/screens/Dashboard/Calling/Screen';
 import {PortalHost} from '@rn-primitives/portal';
+import {DashboardScreen} from '@src/screens/Dashboard/Screen';
 
 const Stack = createNativeStackNavigator();
 

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -27,11 +27,9 @@ export default function LoginScreen({
   const colors = getTwColors(colorScheme);
   const context = useAuth();
 
-  useEffect(() => {
-    if (context.user) {
-      navigation.replace('Dashboard');
-    }
-  }, [context.user, navigation]);
+  if (context.user) {
+    navigation.replace('Dashboard');
+  }
 
   return (
     <ScrollView>

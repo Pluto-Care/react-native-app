@@ -1756,6 +1756,20 @@
   dependencies:
     "@radix-ui/react-compose-refs" "1.1.0"
 
+"@radix-ui/react-tabs@^1.0.4":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-tabs/-/react-tabs-1.1.0.tgz#0a6db1caed56776a1176aae68532060e301cc1c0"
+  integrity sha512-bZgOKB/LtZIij75FSuPzyEti/XBhJH52ExgtdVqjCIh+Nx/FW+LhnbXtbCzIi34ccyMsyOja8T0thCzoHFXNKA==
+  dependencies:
+    "@radix-ui/primitive" "1.1.0"
+    "@radix-ui/react-context" "1.1.0"
+    "@radix-ui/react-direction" "1.1.0"
+    "@radix-ui/react-id" "1.1.0"
+    "@radix-ui/react-presence" "1.1.0"
+    "@radix-ui/react-primitive" "2.0.0"
+    "@radix-ui/react-roving-focus" "1.1.0"
+    "@radix-ui/react-use-controllable-state" "1.1.0"
+
 "@radix-ui/react-use-callback-ref@1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@radix-ui/react-use-callback-ref/-/react-use-callback-ref-1.1.0.tgz"
@@ -2230,6 +2244,15 @@
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@rn-primitives/slot/-/slot-1.0.3.tgz#878b488dd7844703eb0b4dbc51c239e1bdb0ca11"
   integrity sha512-sSDYwD2upLQUOva2cmNfaJqZlN+o0E/wa8uXEDEIYj6MJsG/O0k1t0jGXMqLP8BsQ3ZaTtUbqnG9eW/VQFOmdQ==
+
+"@rn-primitives/tabs@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@rn-primitives/tabs/-/tabs-1.0.3.tgz#3aaa27f61ea7391edc3f49d6f48e3c672c5c7ab9"
+  integrity sha512-w+OTkpaSvPM2t24Bmx60PC39J4iZKFuGTHOcjBUUdXjBgJ2FGiTyywdkSrQ5M3nBLJYnaBI4C9S+CTd1nCAGXA==
+  dependencies:
+    "@radix-ui/react-tabs" "^1.0.4"
+    "@rn-primitives/slot" "1.0.3"
+    "@rn-primitives/types" "1.0.3"
 
 "@rn-primitives/types@1.0.3":
   version "1.0.3"

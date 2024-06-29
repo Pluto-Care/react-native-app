@@ -94,7 +94,7 @@ export function timePretty(dt: string) {
     ':' +
     ('0' + x.getMinutes()).slice(-2) +
     ' ' +
-    (x.getHours() > 12 ? 'PM' : 'AM')
+    (x.getHours() > 12 ? 'pm' : 'am')
   );
 }
 
