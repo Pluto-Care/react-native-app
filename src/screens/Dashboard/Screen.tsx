@@ -5,6 +5,7 @@ import {Text} from '@src/components/ui/text';
 import {CalendarCheck, Plus, Users} from 'lucide-react-native';
 import {getColors} from '@src/styles/styles';
 import {SignedIn, useAuth} from '@src/contexts/auth';
+import DashboardPatientsTab from './PatientsTab';
 
 export interface IDashboardScreenProps {
   navigation: any;
@@ -28,7 +29,7 @@ export function DashboardScreen(props: IDashboardScreenProps) {
             {value === 'appointments' ? (
               <DashboardAppointmentTabScreen navigation={props.navigation} />
             ) : value === 'patients' ? (
-              <Text>Patient List here</Text>
+              <DashboardPatientsTab navigation={props.navigation} />
             ) : (
               <Text>New Appointment Page</Text>
             )}
