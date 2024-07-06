@@ -71,6 +71,9 @@ const ColorStyles = {
     accent: {
       foreground: '#576bdb',
     },
+    danger: {
+      foreground: '#d9534f',
+    },
   },
   dark: {
     icon: {
@@ -82,6 +85,9 @@ const ColorStyles = {
     },
     accent: {
       foreground: '#576bdb',
+    },
+    danger: {
+      foreground: '#d9534f',
     },
   },
 };

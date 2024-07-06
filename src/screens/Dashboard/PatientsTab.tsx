@@ -54,9 +54,9 @@ export default function DashboardPatientsTab({navigation}: {navigation: any}) {
                 width: 0,
                 height: 4,
               },
-              shadowOpacity: 0.4,
+              shadowOpacity: 0.2,
               shadowRadius: 0,
-              elevation: 10,
+              elevation: 4,
             }}
             className="z-10 pb-1 bg-white dark:bg-zinc-950">
             <UserTopbar navigation={navigation} />

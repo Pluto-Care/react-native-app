@@ -1,0 +1,34 @@
+import * as LabelPrimitive from '@rn-primitives/label';
+import * as React from 'react';
+import {cn} from '@src/lib/utils';
+import {useColorScheme} from 'react-native';
+import {getTwColors} from '@src/styles/styles';
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Text>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Text>
+>(({className, onPress, onLongPress, onPressIn, onPressOut, ...props}, ref) => {
+  const theme = useColorScheme() || 'light';
+
+  return (
+    <LabelPrimitive.Root
+      key={theme}
+      className="web:cursor-default"
+      onPress={onPress}
+      onLongPress={onLongPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}>
+      <LabelPrimitive.Text
+        ref={ref}
+        className={cn(
+          'text-sm text-foreground native:text-base font-medium leading-none web:peer-disabled:cursor-not-allowed web:peer-disabled:opacity-70',
+          className,
+        )}
+        {...props}
+      />
+    </LabelPrimitive.Root>
+  );
+});
+Label.displayName = LabelPrimitive.Root.displayName;
+
+export {Label};
