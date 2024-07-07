@@ -1,4 +1,10 @@
-import {Pressable, ScrollView, View, useColorScheme} from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  View,
+  useColorScheme,
+} from 'react-native';
 import axios from 'axios';
 import React from 'react';
 import {SignedIn, useAuth} from '@src/contexts/auth';
@@ -10,7 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
-  Plus,
+  RefreshCw,
 } from 'lucide-react-native';
 import {useMutation} from '@tanstack/react-query';
 import {BACKEND_URL} from '@src/config/common';
@@ -109,6 +115,14 @@ export default function DashboardAppointmentTabScreen({
     dateAppointmentMutation.mutate(formattedDate);
   }
 
+  const refreshAppointments = () => {
+    const d = new Date(date);
+    const formattedDate = `${
+      d.getMonth() + 1
+    }-${d.getDate()}-${d.getFullYear()}`; // MM-DD-YYYY
+    dateAppointmentMutation.mutate(formattedDate);
+  };
+
   return (
     <Animated.View entering={FadeInRight.duration(100)} className="h-full">
       <View className={`${twc.bg.body} min-h-full flex-1`}>
@@ -198,11 +212,32 @@ export default function DashboardAppointmentTabScreen({
                   </Text>
                 </View>
                 <Button
-                  variant={'accent'}
+                  variant={'secondary'}
                   size={'sm'}
-                  className="flex flex-row gap-1.5 rounded-xl">
-                  <Plus size={14} strokeWidth={2.5} color={color.icon.accent} />
-                  <Text>Add</Text>
+                  className="flex flex-row gap-2 rounded-xl"
+                  disabled={dateAppointmentMutation.isPending}
+                  onPress={() => {
+                    refreshAppointments();
+                  }}>
+                  {dateAppointmentMutation.isPending ? (
+                    <>
+                      <ActivityIndicator
+                        size="small"
+                        color={color.icon.foreground}
+                        className="scale-90 aspect-square"
+                      />
+                      <Text>Loading</Text>
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw
+                        size={13}
+                        strokeWidth={2.5}
+                        color={color.icon.foreground}
+                      />
+                      <Text>Refresh</Text>
+                    </>
+                  )}
                 </Button>
               </View>
               {dateAppointmentMutation.isPending ? (
@@ -238,55 +273,63 @@ export default function DashboardAppointmentTabScreen({
                                 shadowRadius: 3.84,
                                 elevation: 4,
                               }}>
-                              <Pressable className="flex flex-row px-3 py-2 -mx-2 rounded-xl active:bg-white/10">
-                                <Text className="flex-1 font-bold tracking-wide text-white">
-                                  Appointment
-                                </Text>
-                                <View className="flex flex-row items-center gap-2">
-                                  <Badge
-                                    variant={
-                                      nextApt.status === 'cancelled'
-                                        ? 'destructive'
-                                        : 'secondary'
-                                    }>
-                                    <Text>{nextApt.status}</Text>
-                                  </Badge>
-                                  <ChevronRight
-                                    size={24}
+                              <Pressable
+                                className="px-3 py-2 -mx-2 active:bg-white/10 rounded-xl"
+                                onPress={() => {
+                                  navigation.push('Appointment', {
+                                    id: nextApt.id,
+                                  });
+                                }}>
+                                <View className="flex flex-row">
+                                  <Text className="flex-1 font-bold tracking-wide text-white">
+                                    Appointment
+                                  </Text>
+                                  <View className="flex flex-row items-center gap-2">
+                                    <Badge
+                                      variant={
+                                        nextApt.status === 'cancelled'
+                                          ? 'destructive'
+                                          : 'secondary'
+                                      }>
+                                      <Text>{nextApt.status}</Text>
+                                    </Badge>
+                                    <ChevronRight
+                                      size={24}
+                                      color={color.icon.white}
+                                    />
+                                  </View>
+                                </View>
+                                <View className="flex flex-row items-center gap-3 mt-3 opacity-80">
+                                  <CalendarClock
+                                    size={16}
+                                    strokeWidth={2.5}
                                     color={color.icon.white}
                                   />
+                                  <Text className="text-[13px] font-medium text-white">
+                                    {timePretty(nextApt.start_time)} —{' '}
+                                    {timePretty(nextApt.end_time_expected)}
+                                  </Text>
+                                </View>
+                                <View className="flex flex-row items-center gap-3 mt-2 opacity-80">
+                                  <Clock
+                                    size={16}
+                                    strokeWidth={2.5}
+                                    color={color.icon.white}
+                                  />
+                                  <Text className="text-[13px] font-medium text-white">
+                                    Duration:{' '}
+                                    {(new Date(
+                                      nextApt.end_time_expected,
+                                    ).getTime() -
+                                      new Date(nextApt.start_time).getTime()) /
+                                      1000 /
+                                      60}{' '}
+                                    mins
+                                  </Text>
                                 </View>
                               </Pressable>
-                              <View className="flex flex-row items-center gap-3 mt-3 opacity-80">
-                                <CalendarClock
-                                  size={16}
-                                  strokeWidth={2.5}
-                                  color={color.icon.white}
-                                />
-                                <Text className="text-[13px] font-medium text-white">
-                                  {timePretty(nextApt.start_time)} —{' '}
-                                  {timePretty(nextApt.end_time_expected)}
-                                </Text>
-                              </View>
-                              <View className="flex flex-row items-center gap-3 mt-2 opacity-80">
-                                <Clock
-                                  size={16}
-                                  strokeWidth={2.5}
-                                  color={color.icon.white}
-                                />
-                                <Text className="text-[13px] font-medium text-white">
-                                  Duration:{' '}
-                                  {(new Date(
-                                    nextApt.end_time_expected,
-                                  ).getTime() -
-                                    new Date(nextApt.start_time).getTime()) /
-                                    1000 /
-                                    60}{' '}
-                                  mins
-                                </Text>
-                              </View>
                               <View
-                                className="flex flex-row items-center gap-3 px-4 py-3 mt-5 -mx-1 -mb-1.5 shadow rounded-xl bg-primary-foreground"
+                                className="flex flex-row items-center gap-3 px-4 py-3 mt-2 -mx-1 -mb-1.5 shadow rounded-xl bg-primary-foreground"
                                 style={{
                                   shadowColor: '#000',
                                   shadowOffset: {
@@ -307,9 +350,14 @@ export default function DashboardAppointmentTabScreen({
                                   </Text>
                                 </View>
                                 <Button
-                                  variant={'ghost'}
+                                  variant={'accent'}
                                   size={'md'}
-                                  className="px-1 py-1 rounded-lg bg-primary/5">
+                                  className="px-1 py-1 rounded-lg bg-primary/5"
+                                  onPress={() => {
+                                    navigation.push('Patient', {
+                                      id: nextApt.patient.id,
+                                    });
+                                  }}>
                                   <Text>View Details</Text>
                                 </Button>
                               </View>
@@ -321,65 +369,78 @@ export default function DashboardAppointmentTabScreen({
                       <></>
                     )}
                     <View className="flex gap-3 px-6 mb-6">
-                      {appointments.map((appointment, index) => (
-                        <Animated.View
-                          key={index}
-                          entering={FadeInDown.duration(200).delay(
-                            100 * index,
-                          )}>
-                          <AnimatedPressableSpring
-                            className={`w-full bg-white dark:bg-zinc-950 rounded-xl ${
-                              theme === 'light'
-                                ? 'active:bg-zinc-300'
-                                : 'active:bg-zinc-800'
-                            }`}
-                            onPress={() => {
-                              navigation.push('Appointment', {
-                                id: appointment.id,
-                              });
-                            }}
-                            style={{
-                              shadowColor: theme === 'light' ? '#aaa' : '#000',
-                              shadowOffset: {
-                                width: 0,
-                                height: 1,
-                              },
-                              shadowOpacity: 0.1,
-                              shadowRadius: 4,
-                              elevation: 2,
-                            }}>
-                            <View className="flex flex-row items-center w-full px-4 py-4">
-                              <View className="flex flex-col flex-1 gap-1">
-                                <Text
-                                  className={
-                                    'dark:text-white/90 text-black/90 text-[13.5px] font-medium'
-                                  }>
-                                  {appointment.patient.first_name}{' '}
-                                  {appointment.patient.last_name}
-                                </Text>
-                                <Text
-                                  className={`${twc.text.muted} text-[12px]`}>
-                                  {timePretty(appointment.start_time)} —{' '}
-                                  {timePretty(appointment.end_time_expected)}
-                                </Text>
-                              </View>
-                              <Badge className="mx-3">
-                                <Text>{appointment.status}</Text>
-                              </Badge>
-                              <ChevronRight
-                                size={20}
-                                strokeWidth={1.5}
-                                color={color.icon.muted}
-                              />
-                            </View>
-                          </AnimatedPressableSpring>
-                        </Animated.View>
-                      ))}
+                      {appointments.map(
+                        (appointment, index) =>
+                          appointment.id !== nextApt?.id && (
+                            <Animated.View
+                              key={index}
+                              entering={FadeInDown.duration(200).delay(
+                                100 * index,
+                              )}>
+                              <AnimatedPressableSpring
+                                className={`w-full bg-white dark:bg-zinc-950 rounded-xl ${
+                                  theme === 'light'
+                                    ? 'active:bg-zinc-300'
+                                    : 'active:bg-zinc-800'
+                                }`}
+                                onPress={() => {
+                                  navigation.push('Appointment', {
+                                    id: appointment.id,
+                                  });
+                                }}
+                                style={{
+                                  shadowColor:
+                                    theme === 'light' ? '#aaa' : '#000',
+                                  shadowOffset: {
+                                    width: 0,
+                                    height: 1,
+                                  },
+                                  shadowOpacity: 0.1,
+                                  shadowRadius: 4,
+                                  elevation: 2,
+                                }}>
+                                <View className="flex flex-row items-center w-full px-4 py-4">
+                                  <View className="flex flex-col flex-1 gap-1">
+                                    <Text
+                                      className={
+                                        'dark:text-white/90 text-black/90 text-[13.5px] font-medium'
+                                      }>
+                                      {appointment.patient.first_name}{' '}
+                                      {appointment.patient.last_name}
+                                    </Text>
+                                    <Text
+                                      className={`${twc.text.muted} text-[12px]`}>
+                                      {timePretty(appointment.start_time)} —{' '}
+                                      {timePretty(
+                                        appointment.end_time_expected,
+                                      )}
+                                    </Text>
+                                  </View>
+                                  <Badge className="mx-3">
+                                    <Text>{appointment.status}</Text>
+                                  </Badge>
+                                  <ChevronRight
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    color={color.icon.muted}
+                                  />
+                                </View>
+                              </AnimatedPressableSpring>
+                            </Animated.View>
+                          ),
+                      )}
                     </View>
                   </>
                 )
               ) : dateAppointmentMutation.isError ? (
-                <Text>Failed to load appointments</Text>
+                <View className="px-4 py-3 mx-6 bg-red-100 rounded-md dark:bg-red-400/10">
+                  <Text style={{color: color.danger.foreground}}>
+                    Failed to load appointments.
+                  </Text>
+                  <Text style={{color: color.danger.foreground}}>
+                    {dateAppointmentMutation.error?.message}
+                  </Text>
+                </View>
               ) : (
                 <></>
               )}

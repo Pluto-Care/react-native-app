@@ -1,3 +1,4 @@
+import React from 'react';
 import {AnimatedPressableSpring} from '@src/components/animated/AnimatedPressable';
 import {Skeleton} from '@src/components/ui/skeleton';
 import {Text} from '@src/components/ui/text';
@@ -78,7 +79,9 @@ export default function DashboardPatientsTab({navigation}: {navigation: any}) {
                           : 'active:bg-zinc-800'
                       }`}
                       onPress={() => {
-                        // navigation.navigate('Patient', {patient});
+                        navigation.push('Patient', {
+                          id: patient.id,
+                        });
                       }}
                       style={{
                         shadowColor: theme === 'light' ? '#aaa' : '#000',

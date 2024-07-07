@@ -48,22 +48,7 @@ export function timeSince(timestamp: string) {
 }
 
 export function dateTimePretty(dt: string) {
-  const x = new Date(dt);
-  const dd = x.getDate();
-  const yy = x.getFullYear();
-  return (
-    yy +
-    '/' +
-    ('0' + (x.getMonth() + 1)).slice(-2) +
-    '/' +
-    ('0' + dd).slice(-2) +
-    ' at ' +
-    ('0' + (x.getHours() > 12 ? x.getHours() - 12 : x.getHours())).slice(-2) +
-    ':' +
-    ('0' + x.getMinutes()).slice(-2) +
-    ' ' +
-    (x.getHours() > 12 ? 'PM' : 'AM')
-  );
+  return datePretty(dt) + ' at ' + timePretty(dt);
 }
 
 export function datePretty(dt: string) {
@@ -93,7 +78,6 @@ export function timePretty(dt: string) {
     ('0' + (x.getHours() > 12 ? x.getHours() - 12 : x.getHours())).slice(-2) +
     ':' +
     ('0' + x.getMinutes()).slice(-2) +
-    ' ' +
     (x.getHours() > 12 ? 'pm' : 'am')
   );
 }

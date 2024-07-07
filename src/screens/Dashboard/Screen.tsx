@@ -8,7 +8,6 @@ import {SignedIn, useAuth} from '@src/contexts/auth';
 import DashboardPatientsTab from './PatientsTab';
 import NewAppointmentTab from './NewAppointmentTab';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
-import {set} from 'node_modules/ts-pattern/dist/patterns';
 
 export interface IDashboardScreenProps {
   navigation: any;
@@ -19,7 +18,6 @@ export function DashboardScreen(props: IDashboardScreenProps) {
   const color = getColors(theme);
   const twc = getTwColors(theme);
   const [value, setValue] = React.useState('appointments');
-  const [previosValue, setPreviousValue] = React.useState('appointments');
   const [openAddAppointment, setOpenAddAppointment] = React.useState(false);
   const context = useAuth();
   const animatedStyles = useAnimatedStyle(() => {
@@ -83,12 +81,8 @@ export function DashboardScreen(props: IDashboardScreenProps) {
               <Pressable
                 className="flex items-center justify-center w-1/2 px-2 py-2 active:bg-zinc-100 dark:active:bg-zinc-800 rounded-xl"
                 onPress={() => {
-                  if (value !== 'appointments') {
-                    setPreviousValue(value);
-                    setValue('appointments');
-                  } else {
-                    setOpenAddAppointment(v => !v);
-                  }
+                  setValue('appointments');
+                  setOpenAddAppointment(false);
                 }}>
                 <CalendarCheck
                   size={20}
@@ -124,7 +118,7 @@ export function DashboardScreen(props: IDashboardScreenProps) {
                     animatedStyles,
                   ]}>
                   <Pressable
-                    className={`p-4 rounded-full`}
+                    className="p-4 rounded-full"
                     onPress={() => {
                       setOpenAddAppointment(v => !v);
                     }}>
@@ -135,12 +129,8 @@ export function DashboardScreen(props: IDashboardScreenProps) {
               <Pressable
                 className="flex items-center justify-center w-1/2 px-2 py-2 active:bg-zinc-100 dark:active:bg-zinc-800 rounded-xl"
                 onPress={() => {
-                  if (value !== 'patients') {
-                    setPreviousValue(value);
-                    setValue('patients');
-                  } else {
-                    setOpenAddAppointment(v => !v);
-                  }
+                  setValue('patients');
+                  setOpenAddAppointment(false);
                 }}>
                 <Users
                   size={20}

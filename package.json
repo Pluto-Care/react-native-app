@@ -14,6 +14,7 @@
     "@react-native-menu/menu": "^1.1.0",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
+    "@rn-primitives/avatar": "^1.0.3",
     "@rn-primitives/dropdown-menu": "^1.0.3",
     "@rn-primitives/label": "^1.0.3",
     "@rn-primitives/portal": "^1.0.3",

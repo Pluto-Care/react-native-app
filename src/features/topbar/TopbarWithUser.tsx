@@ -46,7 +46,8 @@ export default function UserTopbar({navigation}: {navigation: any}) {
                 </View>
                 <View className="pl-3 pr-3 -mt-px">
                   <Text className="text-[15px] font-bold text-foreground">
-                    Hello, {context.user?.detail.first_name}
+                    {context.user?.detail.first_name}{' '}
+                    {context.user?.detail.last_name}
                   </Text>
                   <Text className="text-[11px] text-muted-foreground">
                     Welcome Back

@@ -17,6 +17,7 @@ import AppointmentScreen from './src/screens/Dashboard/Appointment/Screen';
 import CallScreen from '@src/screens/Dashboard/Calling/Screen';
 import {PortalHost} from '@rn-primitives/portal';
 import {DashboardScreen} from '@src/screens/Dashboard/Screen';
+import PatientScreen from '@src/screens/Dashboard/Patient/Screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,11 @@ function App(): React.JSX.Element {
                   options={{headerShown: false}}
                   name="Calling"
                   component={CallScreen}
+                />
+                <Stack.Screen
+                  options={{headerShown: false}}
+                  name="Patient"
+                  component={PatientScreen}
                 />
               </Stack.Navigator>
             </NavigationContainer>
