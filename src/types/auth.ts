@@ -6,6 +6,7 @@ export type AuthUserType = {
   last_name: string;
   updated_at: string;
   email: string;
+  timezone: string;
   created_by: string | null;
   updated_by: string | null;
 };

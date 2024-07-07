@@ -145,7 +145,7 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
             </View>
           </Animated.View>
         </View>
-        {patient_query.isSuccess ? (
+        {appointment_query.isSuccess ? (
           <>
             <ScrollView className="pb-6">
               {/* Appointment */}
@@ -212,7 +212,7 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
                         </Text>
                         <Text
                           className={`${colors.text.foreground} flex-1 pl-3 mt-1 text-sm`}>
-                          {appointment_query.data?.appointment.reason}
+                          {appointment_query.data.appointment.reason}
                         </Text>
                       </View>
                       <View className="flex flex-row items-center gap-2 pt-2 mt-4 border-t border-muted-foreground/10">

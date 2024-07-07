@@ -1,3 +1,4 @@
+import React from 'react';
 import {Control, Controller} from 'react-hook-form';
 import {Input} from './input';
 import {Label} from './label';
@@ -8,12 +9,14 @@ export default function FormInput({
   name,
   control,
   rules,
+  keyboardType,
   ...props
 }: {
   label: string;
   control: Control;
   name: string;
   rules: any;
+  keyboardType: 'default' | 'numeric' | 'email-address' | 'phone-pad';
 }) {
   return (
     <>
@@ -30,6 +33,7 @@ export default function FormInput({
               onChangeText={onChange}
               value={value}
               nativeID={name}
+              keyboardType={keyboardType}
               {...props}
             />
           </View>
