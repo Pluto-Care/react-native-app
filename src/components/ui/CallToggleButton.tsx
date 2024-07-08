@@ -17,13 +17,13 @@ export default function CallToggleButton(props: Props) {
   const [isToggled, setIsToggled] = React.useState(false);
 
   const handlePress = () => {
-    setIsToggled(isToggled => {
-      if (isToggled) {
+    setIsToggled(v => {
+      if (v) {
         props.whenOff();
       } else {
         props.whenOn();
       }
-      return !isToggled;
+      return !v;
     });
   };
 
@@ -32,7 +32,7 @@ export default function CallToggleButton(props: Props) {
       <Pressable
         onPress={handlePress}
         className={`${
-          isToggled ? colors.bg.accent : colors.bg.muted
+          isToggled ? 'bg-accent-foreground' : 'bg-background'
         } rounded-full h-16 w-16 flex items-center justify-center`}>
         {isToggled ? props.iconOn : props.iconOff}
       </Pressable>

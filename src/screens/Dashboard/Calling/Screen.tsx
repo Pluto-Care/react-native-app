@@ -3,15 +3,15 @@ import CallToggleButton from '@src/components/ui/CallToggleButton';
 import CustomButton from '@src/components/ui/CustomButton';
 import {SignedIn, useAuth} from '@src/contexts/auth';
 import {useMakeOutgoingCall} from '@src/hooks/twilio/useMakeOutgoingCall';
-import {getTwColors} from '@src/styles/styles';
+import {getColors, getTwColors} from '@src/styles/styles';
 import {Call} from '@twilio/voice-react-native-sdk';
 import {
   ArrowLeft,
   CirclePause,
   Mic,
   MicOff,
-  Phone,
   PhoneOff,
+  Play,
   Volume2,
 } from 'lucide-react-native';
 import React from 'react';
@@ -19,8 +19,9 @@ import {Pressable, Text, View, useColorScheme} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function CallScreen({navigation}: {navigation: any}) {
-  const theme = useColorScheme();
-  const colors = getTwColors(theme || 'light');
+  const theme = useColorScheme() || 'light';
+  const twc = getTwColors(theme);
+  const color = getColors(theme);
   const params = useRoute().params as any;
   const context = useAuth();
   const [callStatus, setCallStatus] = React.useState<string>('');
@@ -94,9 +95,9 @@ export default function CallScreen({navigation}: {navigation: any}) {
 
   return (
     <SignedIn>
-      <View className={`${colors.bg.body} flex flex-col h-full max-h-screen`}>
-        <View className={`${colors.border.gray} flex h-full border-b`}>
-          <View className={`${colors.bg.body} flex-1`}>
+      <View className={`${twc.bg.body} flex flex-col h-full max-h-screen`}>
+        <View className={`${twc.border.gray} flex h-full border-b`}>
+          <View className={`${twc.bg.body} flex-1`}>
             <LinearGradient
               start={{x: 0, y: 0}}
               end={{x: 1, y: 1}}
@@ -108,15 +109,15 @@ export default function CallScreen({navigation}: {navigation: any}) {
               className="flex items-center justify-center h-full px-6 py-4">
               <View>
                 <Text
-                  className={`${colors.text.foreground} font-bold text-center font-sans text-lg mb-2`}>
+                  className={`${twc.text.foreground} font-bold text-center font-sans text-lg mb-2`}>
                   {params.first_name} {params.last_name}
                 </Text>
                 <Text
-                  className={`text-center uppercase text-xs ${colors.text.muted}`}>
+                  className={`text-center uppercase text-xs ${twc.text.muted}`}>
                   {callStatus || 'No Status'}
                 </Text>
                 <Text
-                  className={`text-center uppercase text-xs mt-2 ${colors.text.muted}`}>
+                  className={`text-center uppercase text-xs mt-2 ${twc.text.muted}`}>
                   {callTime}
                 </Text>
                 <View className="flex flex-row mt-32 mb-24">
@@ -128,10 +129,8 @@ export default function CallScreen({navigation}: {navigation: any}) {
                       call?.outgoingCall?.mute(true);
                     }}
                     isToggled={false}
-                    iconOn={<MicOff size={20} className={'text-white'} />}
-                    iconOff={
-                      <Mic size={20} className={`${colors.text.accent}`} />
-                    }
+                    iconOn={<MicOff size={20} color={color.icon.white} />}
+                    iconOff={<Mic size={20} color={color.icon.accent} />}
                     text="Mute"
                   />
                   <View className="w-8" />
@@ -143,10 +142,8 @@ export default function CallScreen({navigation}: {navigation: any}) {
                       console.log('Speaker On');
                     }}
                     isToggled={false}
-                    iconOn={<Volume2 size={20} className={'text-white'} />}
-                    iconOff={
-                      <Volume2 size={20} className={`${colors.text.accent}`} />
-                    }
+                    iconOn={<Volume2 size={20} color={color.icon.white} />}
+                    iconOff={<Volume2 size={20} color={color.icon.accent} />}
                     text="Speaker"
                   />
                   <View className="w-8" />
@@ -158,29 +155,26 @@ export default function CallScreen({navigation}: {navigation: any}) {
                       call?.outgoingCall?.hold(true);
                     }}
                     isToggled={false}
-                    iconOn={<Phone size={20} className={'text-white'} />}
+                    iconOn={<Play size={20} color={color.icon.white} />}
                     iconOff={
-                      <CirclePause
-                        size={22}
-                        className={`${colors.text.accent}`}
-                      />
+                      <CirclePause size={22} color={color.icon.accent} />
                     }
                     text="Hold"
                   />
                 </View>
                 <View className="flex items-center">
                   <Pressable
-                    className={` w-16 h-16 rounded-full flex justify-center items-center ${colors.bg.danger}`}
+                    className={` w-16 h-16 rounded-full flex justify-center items-center ${twc.bg.danger}`}
                     onPress={() => {
                       call?.outgoingCall?.disconnect();
                     }}>
-                    <PhoneOff size={20} className={'text-white'} />
+                    <PhoneOff size={20} color={color.icon.white} />
                   </Pressable>
                 </View>
               </View>
             </LinearGradient>
           </View>
-          <View className={`border-t ${colors.border.gray}`}>
+          <View className={`border-t ${twc.border.gray}`}>
             <CustomButton
               style="accent_hollow_no_border"
               text="Go back to details"
@@ -188,7 +182,7 @@ export default function CallScreen({navigation}: {navigation: any}) {
               onClick={() => {
                 navigation.goBack();
               }}
-              icon={<ArrowLeft size={18} className={`${colors.text.accent}`} />}
+              icon={<ArrowLeft size={18} color={color.icon.accent} />}
               noRoundedCorners
             />
           </View>
