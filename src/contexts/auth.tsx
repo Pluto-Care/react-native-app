@@ -133,7 +133,6 @@ function useSignIn() {
         }
       })
       .catch(error => {
-        console.log(error.response);
         if (error.response && error.response.data) {
           if ('errors' in error.response.data) {
             if (error.response.data.errors.code === 'TOTPRequired') {

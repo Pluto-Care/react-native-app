@@ -66,8 +66,8 @@ export default function AppointmentScreen({navigation}: {navigation: any}) {
         .then(res => res.data.data),
   });
 
-  console.log(patient_query.data);
-  console.log(appointment_query.data);
+  // console.log(patient_query.data);
+  // console.log(appointment_query.data);
 
   return (
     <SignedIn>

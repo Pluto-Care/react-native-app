@@ -10,6 +10,7 @@ export default function FormInput({
   control,
   rules,
   keyboardType,
+  secureTextEntry,
   ...props
 }: {
   label: string;
@@ -17,6 +18,7 @@ export default function FormInput({
   name: string;
   rules: any;
   keyboardType: 'default' | 'numeric' | 'email-address' | 'phone-pad';
+  secureTextEntry?: boolean;
 }) {
   return (
     <>
@@ -34,6 +36,7 @@ export default function FormInput({
               value={value}
               nativeID={name}
               keyboardType={keyboardType}
+              secureTextEntry={secureTextEntry || false}
               {...props}
             />
           </View>

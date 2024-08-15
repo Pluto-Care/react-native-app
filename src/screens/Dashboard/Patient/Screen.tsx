@@ -52,7 +52,7 @@ export default function PatientScreen({navigation}: {navigation: any}) {
         .then(res => res.data.data as PatientNoteType[]),
   });
 
-  console.log(notes_query.data);
+  // console.log(notes_query.data);
 
   return (
     <SignedIn>

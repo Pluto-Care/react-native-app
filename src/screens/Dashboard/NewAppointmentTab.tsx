@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 import React from 'react';
 import FormInput from '@src/components/ui/form-input';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -83,7 +84,6 @@ export default function NewAppointmentTab({navigation}: {navigation: any}) {
     data['duration'] = parseInt(data['duration']);
     data['assigned_to'] = auth.user?.detail.id;
     data['status'] = 'confirmed';
-    console.log(data);
     mutation.mutate(data);
   };
 
